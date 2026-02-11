@@ -120,11 +120,7 @@ class LessonInline(admin.TabularInline):
 
 class TeacherAdmin(SummernoteModelAdmin):
     summernote_fields = ("description",)
-    list_display = (
-        "user",
-        "full_name",
-        "status"
-    )
+    list_display = ("user", "full_name", "status")
     search_fields = ("full_name",)
     inlines = [TeacherContactInline, LessonInline]
 

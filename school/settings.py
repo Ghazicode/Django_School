@@ -28,12 +28,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_summernote",
-
     # my apps
     "accounts.apps.AccountsConfig",
     "home.apps.HomeConfig",
     "blog.apps.BlogConfig",
-
 ]
 
 MIDDLEWARE = [
@@ -51,7 +49,7 @@ ROOT_URLCONF = "school.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -96,10 +94,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
-
-
 SUMMERNOTE_CONFIG = {
     "summernote": {
         "width": "100%",
@@ -119,8 +113,6 @@ SUMMERNOTE_CONFIG = {
 }
 
 SUMMERNOTE_THEME = "bs4"
-
-
 
 
 # Internationalization

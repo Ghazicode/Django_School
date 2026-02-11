@@ -119,7 +119,7 @@ class Teacher(models.Model):
     description = models.TextField(verbose_name="توضیحات")
     degree = models.CharField(max_length=250, verbose_name="مدرک")
     teaching_experience = models.IntegerField(default=0, verbose_name="سابقه دریس")
-    status = models.BooleanField(default=False, verbose_name='نمره گذاشتن')
+    status = models.BooleanField(default=False, verbose_name="نمره گذاشتن")
     created_date = jmodels.jDateField(auto_now_add=True, verbose_name="زمان ثبت")
     updated_date = jmodels.jDateField(auto_now=True, verbose_name="زمان اپدیت")
 
