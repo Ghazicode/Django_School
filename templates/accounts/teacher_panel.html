@@ -1,0 +1,2480 @@
+{% load account_tags %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>پنل معلم | مدرسه امام حسین (ع)</title>
+    <meta name="description" content="پنل مدیریت معلمان مدرسه امام حسین (ع) - مدیریت نمرات، مقالات و پروفایل">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css">
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+            --text-color: #334155;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --sidebar-z-index: 1001;
+            --overlay-z-index: 999;
+            --mobile-menu-z-index: 1100;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+            font-size: inherit;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        /* استایل پیام‌های Django */
+        .django-message-container {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 1100;
+            max-width: 400px;
+            animation: slideInLeft 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                left: -100%;
+                opacity: 0;
+            }
+            to {
+                left: 20px;
+                opacity: 1;
+            }
+        }
+
+        .django-message {
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 0.9rem;
+        }
+
+        .django-message::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .message-success::before {
+            background: linear-gradient(to bottom, #10b981, #34d399);
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .message-error::before {
+            background: linear-gradient(to bottom, #dc2626, #ef4444);
+        }
+
+        .message-warning {
+            background: linear-gradient(135deg, #fef3c7, #fffbeb);
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+
+        .message-warning::before {
+            background: linear-gradient(to bottom, #f59e0b, #fbbf24);
+        }
+
+        .message-info {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .message-info::before {
+            background: linear-gradient(to bottom, #3b82f6, #60a5fa);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* هدر */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            height: var(--header-height);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo h1 {
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            color: var(--dark-color);
+        }
+
+        .nav-menu li a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(59, 130, 246, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-profile:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* منوی همبرگر */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05);
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            user-select: none;
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* دکمه سایدبار موبایل */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 1002;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.3rem;
+            user-select: none;
+        }
+
+        .sidebar-toggle:hover {
+            transform: translateY(-3px) rotate(180deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* منوی موبایل */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+            z-index: var(--mobile-menu-z-index);
+            transition: var(--transition);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideIn {
+            from {
+                right: -100%;
+                opacity: 0;
+            }
+            to {
+                right: 0;
+                opacity: 1;
+            }
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .mobile-menu-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .mobile-nav {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: var(--transition);
+            color: var(--dark-color);
+            background: rgba(0, 0, 0, 0.02);
+            user-select: none;
+        }
+
+        .mobile-nav li a:hover {
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-10px);
+        }
+
+        .mobile-nav li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .mobile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-logout-btn {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .mobile-logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: var(--overlay-z-index);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        /* پنل معلم */
+        .teacher-panel {
+            display: flex;
+            margin-top: var(--header-height);
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        /* سایدبار */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem 0;
+            position: fixed;
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: var(--sidebar-z-index);
+            box-shadow: var(--shadow-lg);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sidebar-menu {
+            padding: 0 1.5rem;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            transition: var(--transition);
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.02);
+            user-select: none;
+            border: none;
+            width: 100%;
+            text-align: right;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            transform: translateX(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sidebar-link i {
+            font-size: 1.3rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* دکمه خروج در سایدبار */
+        .sidebar-logout {
+            margin-top: 2rem;
+            padding: 0 1.5rem;
+        }
+
+        .sidebar-logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            text-align: right;
+            justify-content: flex-start;
+        }
+
+        .sidebar-logout-btn:hover {
+            transform: translateX(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* محتوای اصلی */
+        .main-content {
+            flex: 1;
+            margin-right: var(--sidebar-width);
+            padding: 2rem;
+            transition: var(--transition);
+            min-width: 0;
+            width: 100%;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* استایل‌های جدید */
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .page-description {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+            appearance: none;
+            -webkit-appearance: none;
+            min-height: 48px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        /* جدول نمرات - چیدمان جدید */
+        .grades-container {
+            width: 100%;
+        }
+
+        .student-grade-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .student-grade-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .student-info {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .student-username {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .grade-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .grade-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grade-field label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grade-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            text-align: center;
+            font-family: inherit;
+            transition: var(--transition);
+            font-size: 1rem;
+            min-height: 46px;
+        }
+
+        .grade-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .submit-grade-btn {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        /* تب‌های دروس */
+        .lessons-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+
+        .lesson-tab {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            font-size: 0.95rem;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .lesson-tab:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .lesson-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* مقالات */
+        .articles-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .article-item {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-right: 5px solid var(--primary-color);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .article-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-color);
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-weight: 500;
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* پروفایل */
+        .profile-card {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .profile-role {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            min-width: 100px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            margin-top: 0.5rem;
+        }
+
+        /* کلاس‌ها */
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .class-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .class-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .class-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .class-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-h {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-h:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+        }
+
+        /* پیام‌ها */
+        .messages-container {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .messages-sidebar {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .messages-list {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .message-item {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-item:hover,
+        .message-item.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            transform: translateX(-5px);
+            border-color: transparent;
+        }
+
+        .message-sender {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .message-subject {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-subject i {
+            font-size: 0.8rem;
+        }
+
+        .message-preview {
+            font-size: 0.85rem;
+            color: inherit;
+            opacity: 0.9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .message-content {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .message-sender-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .message-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .message-subject-display {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(30, 64, 175, 0.1));
+            border-radius: 12px;
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .message-subject-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-body {
+            margin-top: 1.5rem;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* بخش‌های دروس */
+        .lesson-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .classes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-menu,
+            .header-buttons .btn-outline {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .sidebar {
+                right: -100%;
+            }
+
+            .sidebar.active {
+                right: 0;
+                animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            }
+
+            .main-content {
+                margin-right: 0;
+                padding: 1rem;
+                width: 100%;
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .messages-container {
+                flex-direction: column;
+            }
+
+            .messages-sidebar,
+            .message-content {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .profile-stats {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .stat-item {
+                min-width: 90px;
+                padding: 0.8rem;
+            }
+
+            .grade-fields {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 1.2rem;
+                border-radius: 12px;
+            }
+
+            .article-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .classes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-tab {
+                flex: 1;
+                min-width: 110px;
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .grade-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .django-message-container {
+                left: 10px;
+                right: 10px;
+                max-width: calc(100% - 20px);
+                top: 75px;
+            }
+
+            .django-message {
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .mobile-menu {
+                width: 280px;
+                padding: 1.5rem 1rem;
+            }
+
+            .sidebar-toggle {
+                top: 75px;
+                left: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2rem;
+            }
+
+            .profile-name {
+                font-size: 1.3rem;
+            }
+
+            .message-subject-display {
+                padding: 0.8rem;
+            }
+
+            .message-subject-title {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 0.8rem;
+            }
+
+            .page-header {
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.8rem;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .page-description {
+                font-size: 0.9rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .action-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                min-height: 32px;
+            }
+
+            .message-sender-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.8rem;
+            }
+
+            .stat-item {
+                min-width: 80px;
+                padding: 0.6rem;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .grade-input,
+            .form-control {
+                min-height: 42px;
+                padding: 0.6rem 0.8rem;
+                font-size: 0.95rem;
+            }
+
+            .lesson-tab {
+                min-width: 100px;
+                padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .logo h1 {
+                font-size: 1rem;
+            }
+
+            .user-profile span {
+                display: none;
+            }
+
+            .user-profile {
+                padding: 0.3rem;
+            }
+
+            .sidebar-toggle {
+                top: 70px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+
+            .message-subject {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .page-title {
+                font-size: 1.2rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .grade-fields {
+                grid-template-columns: 1fr;
+            }
+            
+            .lesson-tab {
+                min-width: 90px;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.7rem;
+            }
+            
+            .mobile-menu {
+                width: 260px;
+            }
+            
+            .profile-avatar {
+                width: 90px;
+                height: 90px;
+            }
+
+            .message-subject {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* انیمیشن شناور */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+
+        /* انیمیشن برای آیکون‌ها */
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* بهبود اسکرول در موبایل */
+        .sidebar::-webkit-scrollbar,
+        .messages-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track,
+        .messages-list::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 2px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb,
+        .messages-list::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 2px;
+        }
+
+        /* جلوگیری از زوم در فیلدهای عددی در iOS */
+        @supports (-webkit-touch-callout: none) {
+            .grade-input,
+            .form-control {
+                font-size: 16px !important;
+            }
+        }
+
+        /* استایل‌های جدید برای فرم دسته‌جمعی */
+        .bulk-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 12px;
+            border: 2px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .fill-all-btn {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .fill-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .student-count {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .bulk-submit-btn {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bulk-submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .form-status i {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- نمایش پیام‌های Django -->
+    {% if messages %}
+    <div class="django-message-container">
+        {% for message in messages %}
+        <div class="django-message message-{{ message.tags }}">
+            {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle"></i>
+            {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle"></i>
+            {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle"></i>
+            {% elif message.tags == 'info' %}
+                <i class="fas fa-info-circle"></i>
+            {% else %}
+                <i class="fas fa-info-circle"></i>
+            {% endif %}
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- هدر -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap floating-icon" style="font-size: 1.8rem;"></i>
+                <h1>مدرسه امام حسین (ع)</h1>
+            </div>
+
+            <nav class="nav-menu">
+                <li><a href="{% url 'home:main' %}">صفحه اصلی</a></li>
+                <li><a href="{% url 'account:teacher_profile' %}" class="active">پنل معلم</a></li>
+                <li><a href="{% url 'blog:main' %}">مقاله ها</a></li>
+                <li><a href="{% url 'home:news' %}">اخبار</a></li>
+            </nav>
+
+            <div class="header-buttons">
+                <div class="user-profile">
+                    {% if request.user.teachers.image %}
+                        <div class="user-avatar">
+                            <img src="{{ request.user.teachers.image.url }}" alt="{{ request.user.teachers.full_name }}">
+                        </div>
+                    {% else %}
+                    <div class="user-avatar">{{ request.user.teachers.full_name|truncate_chars:1 }}</div>
+                    {% endif %}
+                    <span>{{ request.user.teachers.full_name }}</span>
+                </div>
+            </div>
+
+            <!-- دکمه همبرگر اصلی برای منوی بالا -->
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- دکمه همبرگر جدید برای سایدبار در موبایل -->
+    <div class="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- منوی موبایل -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap" style="font-size: 1.5rem;"></i>
+                <h2>مدرسه امام حسین (ع)</h2>
+            </div>
+            <div class="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+
+        <ul class="mobile-nav">
+            <li><a href="{% url 'home:main' %}"><i class="fas fa-home"></i>صفحه اصلی</a></li>
+            <li><a href="{% url 'account:teacher_profile' %}" class="active"><i class="fas fa-chalkboard-teacher"></i>پنل معلم</a></li>
+            <li><a href="{% url 'blog:main' %}"><i class="fas fa-newspaper"></i>مقاله ها</a></li>
+            <li><a href="{% url 'home:news' %}"><i class="fas fa-bullhorn"></i>اخبار</a></li>
+        </ul>
+
+        <div class="mobile-buttons">
+            <a href="{% url 'account:logout' %}" class="mobile-logout-btn">
+                <i class="fas fa-sign-out-alt"></i> خروج
+            </a>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+
+    <!-- پنل معلم -->
+    <div class="teacher-panel">
+        <!-- سایدبار -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                {% if request.user.teachers.status == True %}
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active" data-target="grades">
+                        <i class="fas fa-edit"></i>
+                        <span>وارد کردن نمره</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-target="articles">
+                       
+                {% else  %}
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active" data-target="articles">
+                        
+                {% endif %}
+                <i class="fas fa-pen"></i>
+                        <span>مدیریت مقاله</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-target="profile">
+                        <i class="fas fa-user"></i>
+                        <span>پروفایل من</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-target="classes">
+                        <i class="fas fa-users"></i>
+                        <span>کلاس‌های من</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-target="messages">
+                        <i class="fas fa-envelope"></i>
+                        <span>پیام‌ها</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- دکمه خروج در سایدبار -->
+            <div class="sidebar-logout">
+                <a href="{% url 'account:logout' %}" class="sidebar-logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>خروج از حساب</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- محتوای اصلی -->
+        <main class="main-content">
+            <!-- وارد کردن نمره -->
+             {% if request.user.teachers.status == True %}
+            <section id="grades" class="page-section active">
+                <div class="page-header">
+                    <h1 class="page-title">وارد کردن نمرات</h1>
+                    <p class="page-description">مدیریت و ثبت نمرات دانش‌آموزان</p>
+                </div>
+
+                <!-- تب‌های دروس -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">لیست دروس شما</h2>
+                    </div>
+                    <div class="lessons-tabs">
+                        {% for lesson in lessons %}
+                        <button class="lesson-tab" data-lesson="{{ lesson.name }}">{{ lesson.name }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% for lesson in lessons %}
+                <div id="{{ lesson.name }}" class="lesson-section">
+                    <!-- فرم ثبت دسته‌جمعی نمرات -->
+                    <form action="{% url 'account:teacher_profile' %}" method="post" class="grade-form" id="grade-form-{{ lesson.id }}">
+                        {% csrf_token %}
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">{{ lesson.name }}</h2>
+                            </div>
+                            
+                            <!-- ابزارهای دسته‌جمعی -->
+                            <div class="bulk-actions">
+                                <button type="button" class="fill-all-btn" data-lesson="{{ lesson.id }}">
+                                    <i class="fas fa-fill-drip"></i>
+                                    پر کردن همه نمرات
+                                </button>
+                                
+                                <div class="student-count">
+                                    <i class="fas fa-users"></i>
+                                    {{ lesson.student.all|length }} دانش‌آموز
+                                </div>
+                                
+                                <button type="submit" class="bulk-submit-btn">
+                                    <i class="fas fa-save"></i>
+                                    ثبت همه نمرات
+                                </button>
+                            </div>
+                            
+                            <div class="grades-container">
+                                {% for student in lesson.student.all %}
+                                <div class="student-grade-item" data-student-id="{{ student.user.username }}">
+                                    <div class="student-info">
+                                        <div class="student-name">{{ student }}</div>
+                                        <div class="student-username">@{{ student.user.username }}</div>
+                                    </div>
+                                    
+                                    <!-- فیلدهای مخفی برای شناسایی دانش‌آموز و درس -->
+                                    <input type="hidden" name="students[]" value="{{ student.user.username }}">
+                                    <input type="hidden" name="lessons[]" value="{{ lesson.name }}">
+                                    
+                                    <div class="grade-fields">
+                                        <div class="grade-field">
+                                            <label for="score-{{ student.id }}-{{ lesson.id }}">
+                                                <i class="fas fa-chart-line"></i>
+                                                نمره درس
+                                            </label>
+                                            <input id="score-{{ student.id }}-{{ lesson.id }}" 
+                                                   name="scores[]" 
+                                                   type="number" 
+                                                   class="grade-input score-input" 
+                                                   min="0" 
+                                                   max="20" 
+                                                   step="0.1" 
+                                                   placeholder="0-20" 
+                                                   required>
+                                        </div>
+                                        
+                                        <div class="grade-field">
+                                            <label for="activity-{{ student.id }}-{{ lesson.id }}">
+                                                <i class="fas fa-chalkboard-teacher"></i>
+                                                فعالیت کلاسی
+                                            </label>
+                                            <input id="activity-{{ student.id }}-{{ lesson.id }}" 
+                                                   name="class_activities[]" 
+                                                   type="number" 
+                                                   class="grade-input activity-input" 
+                                                   min="0" 
+                                                   max="20" 
+                                                   step="0.1" 
+                                                   placeholder="0-20" 
+                                                   required>
+                                        </div>
+                                        
+                                        <div class="grade-field">
+                                            <label for="month-{{ student.id }}-{{ lesson.id }}">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                ماه
+                                            </label>
+                                            <select id="month-{{ student.id }}-{{ lesson.id }}" 
+                                                    name="months[]" 
+                                                    class="form-control month-select" 
+                                                    required>
+                                                <option value="" selected disabled>انتخاب ماه</option>
+                                                <option value="فروردین">فروردین</option>
+                                                <option value="اردیبهشت">اردیبهشت</option>
+                                                <option value="خرداد">خرداد</option>
+                                                <option value="مهر">مهر</option>
+                                                <option value="آبان">آبان</option>
+                                                <option value="آذر">آذر</option>
+                                                <option value="دی">دی</option>
+                                                <option value="بهمن">بهمن</option>
+                                                <option value="اسفند">اسفند</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="grade-field">
+                                            <label for="status-{{ student.id }}-{{ lesson.id }}">
+                                                <i class="fas fa-chart-bar"></i>
+                                                وضعیت
+                                            </label>
+                                            <select id="status-{{ student.id }}-{{ lesson.id }}" 
+                                                    name="statuses[]" 
+                                                    class="form-control status-select" 
+                                                    required>
+                                                <option value="" selected disabled>انتخاب وضعیت</option>
+                                                <option value="average">متوسط</option>
+                                                <option value="good">خوب</option>
+                                                <option value="great">عالی</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="form-status">
+                                <i class="fas fa-info-circle"></i>
+                                <span>همه نمرات این درس به صورت دسته‌جمعی ثبت خواهند شد</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                {% endfor %}
+            </section>
+            <section id="articles" class="page-section">
+            {% else %}
+            <section id="articles" class="page-section active">
+            {% endif %}
+
+            <!-- نوشتن مقاله -->
+            
+                <div class="page-header">
+                    <h1 class="page-title">مدیریت مقالات</h1>
+                    <p class="page-description">نوشتن و مدیریت مقالات آموزشی</p>
+                    <a href="{% url 'blog:addarticle' %}" class="btn btn-primary">نوشتن مقاله</a>
+                </div>
+
+                {% if articles %}
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">مقالات قبلی</h2>
+                    </div>
+                    <div class="articles-list">
+                        {% for article in articles %}
+                        <div class="article-item">
+                            <div class="article-header">
+                                <div>
+                                    <h3 class="article-title">{{ article.title }}</h3>
+                                    <div class="article-meta">
+                                        <span><i class="far fa-calendar"></i> {{ article.created_date|date:'Y/m/d' }}</span>
+                                        <span><i class="far fa-folder"></i> {{ article.subject }}</span>
+                                        <span><i class="far fa-eye"></i> {{ article.views }}</span>
+                                        {% if article.status == True %}
+                                        <span class="text-success">تایید شد</span>
+                                        {% else %}
+                                        <span class="text-warning">در انتظار تایید</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="article-actions">
+                                    <a href="{% url 'blog:detail' article.search %}" class="action-btn edit-btn">مشاهده مقاله</a>
+                                    <a href="{% url 'blog:article_update' article.search %}" class="action-btn edit-btn">ویرایش</a>
+                                    <form method="get" action="{% url 'blog:article_delete' article.search %}" class="delete-form">
+                                        <button type="submit" class="action-btn delete-btn" onclick="return confirm('آیا از حذف این مقاله مطمئن هستید؟')">حذف مقاله</button>
+                                    </form>
+                                </div>  
+                            </div>
+                            <p>{{ article.content|truncate_chars:100|safe }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+
+            <!-- پروفایل -->
+            <section id="profile" class="page-section">
+                <div class="page-header">
+                    <h1 class="page-title">پروفایل من</h1>
+                    <p class="page-description">مدیریت اطلاعات شخصی و حساب کاربری</p>
+                </div>
+
+                <div class="card">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            {% if request.user.teachers.image %}
+                            <img src="{{ request.user.teachers.image.url }}" alt="{{ request.user.teachers.full_name }}">
+                            {% else %}
+                            <i class="fas fa-user"></i>
+                            {% endif %}
+                        </div>
+                        <div class="profile-info">
+                            <h2 class="profile-name">{{ request.user.teachers.full_name }}</h2>
+                            <p>عضویت: {{ request.user.created_date|date:'Y/m/d' }}</p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ request.user.teachers.teaching_experience }}</div>
+                                    <div class="stat-label">سال سابقه</div>
+                                </div>
+                                {% with article_count=request.user.articles.count %}
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ article_count }}</div>
+                                    <div class="stat-label">مقاله</div>
+                                </div>
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"></div>
+                    <div class="profile-details">
+                        <div style="text-align: center; padding: 2rem;">
+                            <p>برای مشاهده و ویرایش اطلاعات پروفایل خود، روی دکمه زیر کلیک کنید.</p>
+                            <a href="{% url 'account:change_password' %}" class="btn btn-primary" style="margin-top: 1rem;">تغییر رمز عبور</a>
+                            <a href="{% url 'account:edit_teacher' %}" class="btn btn-primary" style="margin-top: 1rem;">ویرایش اطلاعات حساب</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- کلاس‌ها -->
+            <section id="classes" class="page-section">
+                {% if lessons %}
+                <div class="page-header">
+                    <h1 class="page-title">کلاس‌های من</h1>
+                    <p class="page-description">مدیریت کلاس‌های درسی</p>
+                </div>
+                {% else %}
+                <h2 class="page-title">هنوز کلاسی برای شما ثبت نشده.</h2>
+                {% endif %}
+
+                <div class="classes-grid">
+                    {% for lesson in lessons %}
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3 class="class-title">{{ lesson.name }}</h3>
+                        </div>
+                        <div class="class-body">
+                            <a href="{% url 'account:attendancerecord' lesson.id %}" class="btn btn-h">حضور و غیاب</a>
+                            <a href="{% url 'account:score_list' lesson.id %}" class="btn btn-h">مشاهده نمرات</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- پیام‌ها -->
+            <section id="messages" class="page-section">
+                {% if teacher_contact %}
+                <div class="page-header">
+                    <h1 class="page-title">پیام‌ها</h1>
+                    <p class="page-description">مدیریت ارتباط با اولیا و همکاران</p>
+                </div>
+                {% else %}
+                <h1 class="page-title">هیچ پیامی برای شما ارسال نشده.</h1>
+                {% endif %}
+                {% if teacher_contact %}
+                <div class="messages-container">
+                    <div class="messages-sidebar">
+                        <h3 style="margin-bottom: 1rem;">لیست پیام‌ها</h3>
+                        <div class="messages-list">
+                            {% for contact in teacher_contact %}
+                            <div class="message-item" onclick="showMessage('{{ contact.id }}')">
+                                <div class="message-sender">{{ contact.student }}</div>
+                                <div class="message-subject">
+                                    <i class="fas fa-tag"></i>
+                                    {{ contact.subject|default:"بدون موضوع" }}
+                                </div>
+                                <div class="message-preview">{{ contact.message|truncate_chars:25 }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        {% for contact in teacher_contact %}
+                        <div id="{{ contact.id }}" class="message-display" style="display: none;">
+                            <div class="message-header">
+                                <div class="message-sender-info">
+                                    <div class="message-avatar">{{ contact.student|truncate_chars:1 }}</div>
+                                    <div>
+                                        <div class="message-sender">{{ contact.student }}</div>
+                                        <div style="color: var(--text-color); font-size: 0.9rem;">{{ contact.created_date|date:'Y/m/d' }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="message-subject-display">
+                                <div class="message-subject-title">
+                                    <i class="fas fa-tag"></i>
+                                    موضوع: {{ contact.subject|default:"بدون موضوع" }}
+                                </div>
+                            </div>
+                            
+                            <div class="message-body">
+                                <p>{{ contact.message }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // مدیریت پیام‌ها
+            const messageContainer = document.querySelector('.django-message-container');
+            if (messageContainer) {
+                setTimeout(() => {
+                    messageContainer.style.animation = 'slideInLeft 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                }, 500);
+
+                setTimeout(() => {
+                    messageContainer.style.opacity = '0';
+                    messageContainer.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        messageContainer.style.display = 'none';
+                    }, 500);
+                }, 10000);
+            }
+
+            // مدیریت تب‌های دروس
+            const lessonTabs = document.querySelectorAll('.lesson-tab');
+            const lessonSections = document.querySelectorAll('.lesson-section');
+
+            if (lessonTabs.length > 0) {
+                // فعال کردن اولین تب
+                lessonTabs[0].click();
+            }
+
+            lessonTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const lessonId = this.getAttribute('data-lesson');
+
+                    // حذف active از همه تب‌ها
+                    lessonTabs.forEach(t => t.classList.remove('active'));
+                    // اضافه کردن active به تب فعلی
+                    this.classList.add('active');
+
+                    // مخفی کردن همه بخش‌ها
+                    lessonSections.forEach(section => section.classList.remove('active'));
+                    
+                    // نمایش بخش مربوطه
+                    const targetSection = document.getElementById(lessonId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+
+            // مدیریت منوها و سایدبار
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const overlay = document.querySelector('.overlay');
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+
+            // منوی همبرگر اصلی (منوی بالا)
+            hamburger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+            });
+
+            mobileMenuClose.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // سایدبار موبایل
+            sidebarToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            });
+
+            // بستن منوها با کلیک روی overlay
+            overlay.addEventListener('click', function (e) {
+                e.stopPropagation();
+                sidebar.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // جلوگیری از بسته شدن منو با کلیک روی خود منو
+            sidebar.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+
+            mobileMenu.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+
+            // مدیریت نمایش بخش‌های مختلف
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const pageSections = document.querySelectorAll('.page-section');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // حذف active از همه لینک‌ها
+                    sidebarLinks.forEach(item => item.classList.remove('active'));
+                    // اضافه کردن active به لینک فعلی
+                    this.classList.add('active');
+
+                    // مخفی کردن همه بخش‌ها
+                    pageSections.forEach(section => section.classList.remove('active'));
+                    
+                    // نمایش بخش مربوطه
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+
+                    // در حالت موبایل، بستن سایدبار بعد از کلیک
+                    if (window.innerWidth <= 992) {
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                    }
+                });
+            });
+
+            // تغییر ظاهر هدر هنگام اسکرول
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+
+            // مدیریت تغییر سایز پنجره
+            function handleResize() {
+                if (window.innerWidth > 992) {
+                    // حالت دسکتاپ
+                    sidebarToggle.style.display = 'none';
+                    sidebar.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                } else {
+                    // حالت موبایل
+                    sidebarToggle.style.display = 'flex';
+                }
+            }
+
+            // اجرای اولیه و گوش دادن به تغییر سایز
+            window.addEventListener('resize', handleResize);
+            handleResize();
+
+            // بهبود تایپ در موبایل
+            const gradeInputs = document.querySelectorAll('.grade-input');
+            gradeInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+
+            // مدیریت دکمه "پر کردن همه نمرات"
+            const fillAllButtons = document.querySelectorAll('.fill-all-btn');
+            
+            fillAllButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const lessonId = this.getAttribute('data-lesson');
+                    const lessonSection = document.getElementById('grade-form-' + lessonId);
+                    
+                    if (!lessonSection) return;
+                    
+                    // درخواست نمره از کاربر
+                    const score = prompt('لطفا نمره درس را وارد کنید (0-20):', '15');
+                    const activity = prompt('لطفا نمره فعالیت کلاسی را وارد کنید (0-20):', '15');
+                    const month = prompt('لطفا ماه را انتخاب کنید (فروردین، اردیبهشت، خرداد، مهر، آبان، آذر، دی، بهمن، اسفند):', 'مهر');
+                    const status = prompt('لطفا وضعیت را انتخاب کنید (average=متوسط، good=خوب، great=عالی):', 'good');
+                    
+                    // اعتبارسنجی مقادیر
+                    if (score && activity && month && status) {
+                        // پر کردن همه فیلدهای درس جاری
+                        const scoreInputs = lessonSection.querySelectorAll('.score-input');
+                        const activityInputs = lessonSection.querySelectorAll('.activity-input');
+                        const monthSelects = lessonSection.querySelectorAll('.month-select');
+                        const statusSelects = lessonSection.querySelectorAll('.status-select');
+                        
+                        scoreInputs.forEach(input => input.value = score);
+                        activityInputs.forEach(input => input.value = activity);
+                        monthSelects.forEach(select => select.value = month);
+                        statusSelects.forEach(select => select.value = status);
+                        
+                        alert('همه فیلدها با موفقیت پر شدند!');
+                    }
+                });
+            });
+
+            // مدیریت ثبت دسته‌جمعی فرم‌ها
+            const gradeForms = document.querySelectorAll('.grade-form');
+            
+            gradeForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // نمایش پیام در حال بارگذاری
+                    const submitBtn = this.querySelector('.bulk-submit-btn');
+                    if (submitBtn) {
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ثبت...';
+                        
+                        // تاخیر برای نمایش انیمیشن
+                        setTimeout(() => {
+                            this.submit();
+                        }, 500);
+                    }
+                });
+            });
+
+            // نمایش اولین پیام به صورت پیش‌فرض
+            const messageItems = document.querySelectorAll('.message-item');
+            if (messageItems.length > 0) {
+                messageItems[0].click();
+            }
+
+            // اعتبارسنجی فرم قبل از ارسال
+            gradeForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    // بررسی اینکه آیا حداقل یک دانش‌آموز وجود دارد
+                    const studentInputs = this.querySelectorAll('input[name="students[]"]');
+                    if (studentInputs.length === 0) {
+                        alert('هیچ دانش‌آموزی در این درس ثبت نشده است!');
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    // بررسی پر شدن تمام فیلدها
+                    let allFieldsFilled = true;
+                    const requiredInputs = this.querySelectorAll('input[required], select[required]');
+                    
+                    requiredInputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            input.style.borderColor = '#dc2626';
+                            allFieldsFilled = false;
+                        } else {
+                            input.style.borderColor = '#e2e8f0';
+                        }
+                    });
+                    
+                    if (!allFieldsFilled) {
+                        alert('لطفا تمام فیلدهای ضروری را پر کنید!');
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    return true;
+                });
+            });
+
+            // افزودن کلاس hover به فیلدها
+            const formInputs = document.querySelectorAll('.grade-input, .form-control');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // تابع نمایش پیام
+        function showMessage(messageId) {
+            // مخفی کردن همه پیام‌ها
+            const allMessages = document.querySelectorAll('.message-display');
+            allMessages.forEach(msg => {
+                msg.style.display = 'none';
+            });
+            
+            // نمایش پیام انتخاب شده
+            const selectedMessage = document.getElementById(messageId);
+            if (selectedMessage) {
+                selectedMessage.style.display = 'block';
+            }
+            
+            // حذف کلاس active از همه آیتم‌های پیام
+            const allMessageItems = document.querySelectorAll('.message-item');
+            allMessageItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // اضافه کردن کلاس active به آیتم انتخاب شده
+            event.currentTarget.classList.add('active');
+        }
+
+        // مدیریت کلیک بیرون از سایدبار در دسکتاپ
+        document.addEventListener('click', function(e) {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (window.innerWidth > 992 && sidebar && mainContent) {
+                // در دسکتاپ کاری انجام نمی‌دهیم
+                return;
+            }
+        });
+
+        // تابع کمکی برای پر کردن مقادیر پیش‌فرض
+        function setDefaultValues(lessonId) {
+            const lessonSection = document.getElementById('grade-form-' + lessonId);
+            if (!lessonSection) return;
+            
+            const today = new Date();
+            const persianMonths = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+            const currentMonth = persianMonths[today.getMonth()];
+            
+            const scoreInputs = lessonSection.querySelectorAll('.score-input');
+            const activityInputs = lessonSection.querySelectorAll('.activity-input');
+            const monthSelects = lessonSection.querySelectorAll('.month-select');
+            const statusSelects = lessonSection.querySelectorAll('.status-select');
+            
+            scoreInputs.forEach(input => input.value = '15');
+            activityInputs.forEach(input => input.value = '15');
+            monthSelects.forEach(select => {
+                select.value = currentMonth;
+            });
+            statusSelects.forEach(select => {
+                select.value = 'good';
+            });
+            
+            return true;
+        }
+    </script>
+</body>
+</html>

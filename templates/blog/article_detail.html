@@ -1,0 +1,1996 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% load static %}
+
+{% block title %}مدرسه امام حسین (ع) | {{ article.title }}{% endblock title %}
+
+{% block content_meta %}{{ article.title }} - مدرسه امام حسین (ع){% endblock content_meta %}
+
+
+
+
+{% block css %}
+
+    <style>
+        /* متغیرهای CSS - دقیقاً مثل صفحه ورود */
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+            --text-color: #334155;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        /* تنظیمات پایه - دقیقاً مثل صفحه ورود */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #fbbf24);
+            color: #78350f;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        /* استایل پیام‌های Django - دقیقاً مثل صفحه ورود */
+        .message-container {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
+
+        .django-message {
+            padding: 1.2rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .django-message::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .message-success::before {
+            background: linear-gradient(to bottom, #10b981, #34d399);
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .message-error::before {
+            background: linear-gradient(to bottom, #dc2626, #ef4444);
+        }
+
+        .message-warning {
+            background: linear-gradient(135deg, #fef3c7, #fffbeb);
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+
+        .message-warning::before {
+            background: linear-gradient(to bottom, #f59e0b, #fbbf24);
+        }
+
+        .message-info {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .message-info::before {
+            background: linear-gradient(to bottom, #3b82f6, #60a5fa);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                right: -100%;
+                opacity: 0;
+            }
+            to {
+                right: 0;
+                opacity: 1;
+            }
+        }
+
+        /* استایل ارورهای فرم */
+        .field-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+            padding: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-right: 3px solid #dc3545;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .field-error:before {
+            content: "⚠️ ";
+        }
+
+        .error-field {
+            border-color: #dc3545 !important;
+            background-color: #fff8f8;
+        }
+
+        .error-field:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        .form-error-container {
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            border: 1px solid #fecaca;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-right: 3px solid #dc2626;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* هدر - دقیقاً مثل صفحه ورود */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            color: var(--dark-color);
+        }
+
+        .nav-menu li a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* منوی موبایل - دقیقاً مثل صفحه ورود */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .mobile-nav {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: var(--transition);
+            color: var(--dark-color);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .mobile-nav li a:hover {
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-10px);
+        }
+
+        .mobile-nav li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .mobile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* بخش اصلی */
+        main {
+            flex: 1;
+            padding-top: 120px;
+        }
+
+        /* مسیر ناوبری */
+        .breadcrumb {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            padding: 1.5rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .breadcrumb::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(245, 158, 11, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .breadcrumb-list a {
+            color: var(--text-color);
+            transition: var(--transition);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .breadcrumb-list a:hover {
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .breadcrumb-list .separator {
+            color: #94a3b8;
+            font-weight: bold;
+        }
+
+        .breadcrumb-list .current {
+            color: var(--primary-color);
+            font-weight: 600;
+            background: rgba(59, 130, 246, 0.15);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+        }
+        li{
+            list-style-type: none;
+        }
+
+        /* محتوای مقاله */
+        .article-detail {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 3rem;
+            position: relative;
+        }
+
+        .article-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .article-main {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .article-hero {
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.2), rgba(59, 130, 246, 0.2));
+            z-index: 1;
+        }
+
+        .article-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .article-hero:hover img {
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            padding: 3rem;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .article-date {
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+        }
+
+        .article-category {
+            background: linear-gradient(135deg, var(--secondary-color), #fbbf24);
+            color: #78350f;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--dark-color);
+            line-height: 1.3;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .article-excerpt {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
+            line-height: 1.7;
+            opacity: 0.8;
+        }
+
+        .article-body {
+            line-height: 1.9;
+            font-size: 1.1rem;
+        }
+
+        .article-body h2 {
+            font-size: 1.8rem;
+            margin: 3rem 0 1.5rem;
+            color: var(--dark-color);
+            font-weight: 700;
+            position: relative;
+            padding-right: 1rem;
+        }
+
+        .article-body h2::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 70%;
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .article-body h3 {
+            font-size: 1.5rem;
+            margin: 2.5rem 0 1.2rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .article-body p {
+            margin-bottom: 1.8rem;
+            text-align: justify;
+        }
+
+        .article-body ul,
+        .article-body ol {
+            margin-right: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-right: 1.2rem;
+        }
+
+        .article-body ul li::before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .article-body ol {
+            counter-reset: list-counter;
+        }
+
+        .article-body ol li {
+            counter-increment: list-counter;
+        }
+
+        .article-body ol li::before {
+            content: counter(list-counter) '.';
+            position: absolute;
+            right: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .article-body blockquote {
+            border-right: 4px solid var(--primary-color);
+            padding: 2rem 2.5rem;
+            margin: 2.5rem 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(245, 158, 11, 0.05));
+            font-style: italic;
+            border-radius: 0 15px 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-body blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 6rem;
+            color: rgba(59, 130, 246, 0.1);
+            font-family: Georgia, serif;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .tag:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            border-color: transparent;
+        }
+
+        /* سایدبار */
+        .article-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .author-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .author-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .author-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 1.5rem;
+            border: 3px solid var(--primary-light);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: var(--transition);
+        }
+
+        .author-card:hover .author-avatar {
+            transform: rotateY(180deg);
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-name {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+
+        .author-bio {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            opacity: 0.8;
+        }
+
+        .author-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .author-social a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .author-social a:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            transform: translateY(-5px) rotate(10deg);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        /* مقالات اخیر */
+        .recent-articles {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recent-articles::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .sidebar-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .related-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .related-item {
+            display: flex;
+            gap: 1.2rem;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            background: rgba(248, 250, 252, 0.5);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+        }
+
+        .related-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-10px);
+            border-color: var(--primary-light);
+        }
+
+        .related-img {
+            width: 90px;
+            height: 70px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: var(--shadow);
+        }
+
+        .related-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .related-item:hover .related-img img {
+            transform: scale(1.1);
+        }
+
+        .related-content {
+            flex: 1;
+        }
+
+        .related-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .related-title a {
+            color: var(--dark-color);
+            transition: var(--transition);
+        }
+
+        .related-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .related-date {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* بخش نظرات */
+        .comments-section {
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: right;
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .comments-list {
+            margin-bottom: 3rem;
+        }
+
+        .comment {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+        }
+
+        .comment:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .comment-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary-light);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-info h4 {
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .comment-info span {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .comment-date {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
+
+        .comment-text {
+            line-height: 1.8;
+            color: var(--text-color);
+            font-size: 1.05rem;
+        }
+
+        .comment-text p {
+            margin-bottom: 0;
+        }
+
+        .comment-reply {
+            margin-top: 1.5rem;
+            margin-right: 3rem;
+            padding-right: 2rem;
+            border-right: 2px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* فرم نظر */
+        .comment-form {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comment-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* استایل دکمه ورود برای بخش نظرات */
+        .login-required-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .login-required-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .login-required-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .login-required-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+
+        .login-required-card p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .btn-login {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 15px rgba(59, 130, 246, 0.3),
+                0 10px 30px rgba(59, 130, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 8px 25px rgba(59, 130, 246, 0.4),
+                0 15px 40px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-login:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-login:active {
+            transform: translateY(-2px);
+        }
+
+        /* صفحه‌بندی نظرات */
+        .comments-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 3rem;
+        }
+
+        .pagination-btn {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+        }
+
+        .pagination-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .pagination-dots {
+            padding: 0 0.8rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        /* پیام عدم وجود نظر */
+        .no-comments {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .no-comments i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .no-comments h4 {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .no-comments p {
+            color: var(--text-color);
+            opacity: 0.8;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* فوتر - دقیقاً مثل صفحه ورود */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-light), var(--secondary-color));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            padding-right: 1rem;
+            opacity: 1;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-contact i {
+            color: var(--secondary-color);
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px) rotate(10deg);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            opacity: 0.8;
+        }
+
+        .developer-credit {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .developer-credit a {
+            color: var(--secondary-color);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .developer-credit a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 992px) {
+            .nav-menu, .header-buttons {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .article-detail {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2.5rem;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+            
+            .article-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding-top: 100px;
+            }
+
+            .breadcrumb {
+                padding: 1rem 0;
+                margin-bottom: 2rem;
+            }
+
+            .article-hero {
+                height: 350px;
+            }
+
+            .article-content {
+                padding: 2rem;
+            }
+
+            .article-title {
+                font-size: 1.8rem;
+            }
+
+            .comment-form {
+                padding: 2rem;
+            }
+            
+            .login-required-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .login-icon {
+                font-size: 3rem;
+            }
+            
+            .article-sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .article-meta {
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: flex-start;
+            }
+
+            .comment-header {
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: flex-start;
+            }
+
+            .article-title {
+                font-size: 1.6rem;
+            }
+
+            .comments-pagination {
+                flex-wrap: wrap;
+            }
+
+            .mobile-menu {
+                width: 280px;
+            }
+            
+            .login-required-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .login-required-card p {
+                font-size: 1rem;
+            }
+            
+            .btn-login {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+{% endblock css %}
+
+
+
+
+ {% block content %}
+
+    <!-- بخش اصلی -->
+    <main>
+        <!-- مسیر ناوبری -->
+        <div class="breadcrumb">
+            <div class="container">
+                <ul class="breadcrumb-list">
+                    <li><a href="{% url 'home:main' %}">صفحه اصلی</a></li>
+                    <li class="separator">/</li>
+                    <li><a href="{% url 'blog:main' %}">مقالات</a></li>
+                    <li class="separator">/</li>
+                    <li class="current">{{ article.title|truncatechars:30 }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="article-detail">
+                <!-- محتوای اصلی مقاله -->
+                <div class="article-main">
+                    <div class="article-hero">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                        {% else %}
+                        <img src="{% static 'img/ubuntu.jpg' %}" alt="{{ article.title }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date">{{ article.created_date|date:'Y/m/d' }}</span>
+                            <span class="article-category">{{ article.subject }}</span>
+                        </div>
+
+                        <h1 class="article-title">{{ article.title }}</h1>
+
+                        <div class="article-body">
+                            {{ article.content|safe }}
+                        </div>
+
+                        {% if article.tags.all %}
+                        <div class="article-tags">
+                            {% for tag in article.tags.all %}
+                            <span class="tag">{{ tag.title }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- سایدبار -->
+                <div class="article-sidebar">
+                    <!-- کارت نویسنده -->
+                    <div class="author-card">
+                        <div class="author-avatar">
+                            {% if request.user.is_teacher and article.author.teachers.image %}
+                                <img src="{{ article.author.teachers.image.url }}" alt="{{ article.author.teachers.full_name }}">
+                            {% elif article.author.profiles.image %}
+                                <img src="{{ article.author.profiles.image.url }}" alt="{{ article.author.profiles.first_name }} {{ article.author.profiles.last_name }}">
+                            {% else %}
+                                <img src="{% static 'img/profile.jpg' %}" alt="نویسنده">
+                            {% endif %}
+                        </div>
+                        <h3 class="author-name">
+                            {% if request.user.is_teacher %}
+                                {{ article.author.teachers.full_name }}
+                            {% else %}
+                                {{ article.author.profiles.first_name }} {{ article.author.profiles.last_name }}
+                            {% endif %}
+                        </h3>
+                        <p class="author-bio">
+                            {% if request.user.is_teacher %}
+                                {{ article.author.teachers.description|truncatechars:60|safe }}
+                            {% else %}
+                                {{ article.author.profiles.description|truncatechars:60|safe }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <!-- مقالات اخیر -->
+                    {% if articles %}
+                    <div class="recent-articles">
+                        <h3 class="sidebar-title">مقالات اخیر</h3>
+                        <div class="related-list">
+                            {% for blog in articles %}
+                            <a href="{% url 'blog:detail' blog.search %}">
+                            <div class="related-item">
+                                <div class="related-img">
+                                    {% if blog.image %}
+                                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                                    {% else %}
+                                    <img src="{% static 'img/ubuntu.jpg' %}" alt="{{ blog.title }}">
+                                    {% endif %}
+                                </div>
+                                <div class="related-content">
+                                    <h4 class="related-title">
+                                        {{ blog.title|truncatechars:35 }}
+                                    </h4>
+                                    <div class="related-date">{{ blog.created_date|date:'Y/m/d' }}</div>
+                                </div>
+                            </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- بخش نظرات -->
+            <div class="comments-section">
+                <div class="section-title">
+                    <h2>نظرات کاربران</h2>
+                </div>
+
+                {% if comments %}
+                    <div class="comments-list">
+                        {% for comment in comments %}
+                        <div class="comment">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <div class="comment-avatar">
+                                        <img src="{% static 'img/profile.jpg' %}" alt="{{ comment.name }}">
+                                    </div>
+                                    <div class="comment-info">
+                                        <h4>{{ comment.name }}</h4>
+                                    </div>
+                                </div>
+                                <div class="comment-date">{{ comment.created_date|date:'Y/m/d' }}</div>
+                            </div>
+                            <div class="comment-text">
+                                <p>{{ comment.comment }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- صفحه‌بندی نظرات -->
+                    {% if comments.paginator.num_pages > 1 %}
+                    <div class="comments-pagination">
+                        {% for i in comments.paginator.page_range %}
+                            {% if comments.number == i %}
+                            <span class="pagination-btn active">{{ i }}</span>
+                            {% else %}
+                            <a href="?page={{ i }}" class="pagination-btn">{{ i }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="no-comments">
+                    <i class="fas fa-comment-dots"></i>
+                    <h4>هنوز نظری ثبت نشده است</h4>
+                    <p>اولین نفری باشید که نظر می‌دهد!</p>
+                </div>
+                {% endif %}
+
+                <!-- فرم ارسال نظر -->
+                <div class="comment-form">
+                    <h3 class="section-title">ثبت نظر جدید</h3>
+
+                    {% if comment_form.errors %}
+                        <div class="form-error-container">
+                            <h4 style="color: #991b1b; margin-bottom: 0.8rem; font-weight: 600;">خطاهای فرم</h4>
+                            {% for field in comment_form %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <div class="field-error">برای فیلد "{{ field.label }}": {{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if comment_form.non_field_errors %}
+                                {% for error in comment_form.non_field_errors %}
+                                    <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if request.user.is_authenticated %}
+                        <form method="post">
+                        {% csrf_token %}
+                        <input name="article" value="{{ article.id }}" type="hidden" required>
+                        <input name="author" value="{{ request.user.id }}" type="hidden" required>
+
+
+                        <div class="form-group">
+                            <label for="name">نام</label>
+                            {{ form.name }}
+                            {% if comment_form.name.errors %}
+                                {% for error in comment_form.name.errors %}
+                                    <span class="field-error">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone_number">شماره تلفن</label>
+                            {{ form.phone_number }}
+                            {% if comment_form.phone_number.errors %}
+                                {% for error in comment_form.phone_number.errors %}
+                                    <span class="field-error">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment">نظر شما</label>
+                            {{ form.comment }}
+                            {% if comment_form.comment.errors %}
+                                {% for error in comment_form.comment.errors %}
+                                    <span class="field-error">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem;">ارسال نظر</button>
+                    </form>
+
+                    {% else %}
+                    <div class="login-required-card">
+                        <div class="login-icon">
+                            <i class="fas fa-user-lock"></i>
+                        </div>
+                        <h3>برای ثبت نظر نیاز به ورود دارید</h3>
+                        <p>لطفاً وارد حساب کاربری خود شوید یا ثبت‌نام کنید تا بتوانید نظر خود را ثبت کنید.</p>
+                        <a href="{% url 'account:login' %}" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            ورود / ثبت‌نام
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock content %}
+
+
+
+{% block js %}
+
+    <script>
+        // منوی همبرگری
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const overlay = document.querySelector('.overlay');
+            
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // تغییر ظاهر هدر هنگام اسکرول
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+            
+            // افکت برای دکمه‌ها
+            const buttons = document.querySelectorAll('.btn, .tag, .related-item, .pagination-btn, .btn-login');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active') && !this.classList.contains('disabled')) {
+                        this.style.transform = 'translateY(-3px) scale(1.02)';
+                    }
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+            
+            // نمایش خودکار پیام‌ها
+            setTimeout(() => {
+                const messages = document.querySelectorAll('.django-message');
+                messages.forEach(msg => {
+                    msg.style.animation = 'slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                });
+            }, 500);
+            
+            // بسته شدن خودکار پیام‌ها بعد از 10 ثانیه
+            setTimeout(() => {
+                const messages = document.querySelectorAll('.django-message');
+                messages.forEach(msg => {
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translateY(-20px)';
+                    msg.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        msg.style.display = 'none';
+                    }, 500);
+                });
+            }, 10000);
+            
+            // انیمیشن برای کامنت‌ها
+            const comments = document.querySelectorAll('.comment');
+            comments.forEach((comment, index) => {
+                setTimeout(() => {
+                    comment.style.opacity = '0';
+                    comment.style.transform = 'translateY(20px)';
+                    comment.style.animation = `slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) ${index * 0.1}s forwards`;
+                }, index * 100);
+            });
+            
+            // برجسته کردن فیلدهای دارای خطا در فرم نظر
+            document.querySelectorAll('.field-error').forEach(function(errorElement) {
+                const formGroup = errorElement.closest('.form-group');
+                if (formGroup) {
+                    const inputElement = formGroup.querySelector('input, textarea');
+                    if (inputElement) {
+                        inputElement.classList.add('error-field');
+                        
+                        // حذف کلاس error-field هنگام تایپ
+                        inputElement.addEventListener('input', function() {
+                            this.classList.remove('error-field');
+                            // حذف پیام خطای مربوطه
+                            const errorSpan = this.closest('.form-group').querySelector('.field-error');
+                            if (errorSpan) {
+                                errorSpan.style.display = 'none';
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // انیمیشن شناور برای آیکون‌ها
+            const icons = document.querySelectorAll('.fas, .fab');
+            icons.forEach((icon, index) => {
+                setTimeout(() => {
+                    icon.style.animation = `float 3s ease-in-out infinite ${index * 0.2}s`;
+                }, index * 100);
+            });
+            
+            // انیمیشن پالس برای آیکون لاگین
+            const loginIcon = document.querySelector('.login-icon i');
+            if (loginIcon) {
+                setInterval(() => {
+                    loginIcon.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        loginIcon.style.transform = 'scale(1)';
+                    }, 500);
+                }, 2000);
+            }
+        });
+    </script>
+
+{% endblock js %}

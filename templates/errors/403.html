@@ -1,0 +1,1395 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% load static %}
+
+{% block title %}دسترسی ممنوع - مدرسه امام حسین (ع){% endblock title %}
+
+{% block content_meta %}دسترسی ممنوع - مدرسه امام حسین (ع){% endblock content_meta %}
+
+
+
+
+
+
+
+
+{% block css %}
+
+    <style>
+        /* متغیرهای CSS */
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --warning-color: #d97706;
+            --warning-light: #fef3c7;
+            --warning-dark: #92400e;
+            --danger-color: #dc2626;
+            --text-color: #334155;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        /* تنظیمات پایه */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 30%, #fde68a 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #f59e0b);
+            color: #451a03;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(217, 119, 6, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #ef4444);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+        }
+
+        /* استایل پیام‌های Django */
+        .message-container {
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+
+        .django-message {
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .django-message::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+        }
+
+        .message-warning {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.9), rgba(255, 251, 235, 0.9));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--warning-dark);
+        }
+
+        .message-warning::before {
+            background: linear-gradient(to bottom, var(--warning-color), #f59e0b);
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, rgba(254, 226, 226, 0.9), rgba(254, 242, 242, 0.9));
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #991b1b;
+        }
+
+        .message-error::before {
+            background: linear-gradient(to bottom, var(--danger-color), #ef4444);
+        }
+
+        .message-info {
+            background: linear-gradient(135deg, rgba(219, 234, 254, 0.9), rgba(239, 246, 255, 0.9));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #1e40af;
+        }
+
+        .message-info::before {
+            background: linear-gradient(to bottom, var(--primary-color), var(--primary-light));
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-30px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px) rotate(-5deg); }
+            20%, 40%, 60%, 80% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes lockBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        @keyframes shieldGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(217, 119, 6, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(217, 119, 6, 0.6); }
+        }
+
+        /* هدر */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            color: var(--dark-color);
+        }
+
+        .nav-menu li a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* منوی موبایل */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .mobile-nav {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: var(--transition);
+            color: var(--dark-color);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .mobile-nav li a:hover {
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-10px);
+        }
+
+        .mobile-nav li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .mobile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* محتوای صفحه 403 */
+        .error-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(217, 119, 6, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .error-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-visual {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .shield-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 2rem;
+        }
+
+        .shield {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--warning-color), #f59e0b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: #451a03;
+            box-shadow: 
+                inset 0 0 30px rgba(255, 255, 255, 0.3),
+                0 0 40px rgba(217, 119, 6, 0.4);
+            animation: shieldGlow 2s ease-in-out infinite;
+            border: 10px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lock {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: lockBounce 3s ease-in-out infinite;
+        }
+
+        .security-rings {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring {
+            position: absolute;
+            border: 3px dashed rgba(217, 119, 6, 0.4);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .ring:nth-child(1) {
+            width: 280px;
+            height: 280px;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        .ring:nth-child(2) {
+            width: 320px;
+            height: 320px;
+            animation-duration: 30s;
+        }
+
+        .ring:nth-child(3) {
+            width: 360px;
+            height: 360px;
+            animation-duration: 35s;
+            animation-direction: reverse;
+        }
+
+        .error-number {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--warning-color), #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            text-shadow: 0 10px 30px rgba(217, 119, 6, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .error-number::after {
+            content: '۴۰۳';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: -1;
+        }
+
+        .error-subtitle {
+            font-size: 2.5rem;
+            color: var(--warning-dark);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .error-subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--warning-color), var(--danger-color));
+            border-radius: 2px;
+        }
+
+        .error-description {
+            color: var(--warning-dark);
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .security-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .security-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 243, 199, 0.9));
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .security-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--warning-color), var(--secondary-color));
+        }
+
+        .security-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .security-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--warning-color), var(--danger-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .security-card h3 {
+            color: var(--warning-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .security-card p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .access-permissions {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 243, 199, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            text-align: right;
+            margin-top: 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-permissions::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--warning-color), transparent 70%);
+            border-radius: 0 20px 0 0;
+            opacity: 0.1;
+        }
+
+        .access-permissions h3 {
+            color: var(--warning-color);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .access-permissions h3 i {
+            animation: shake 2s ease-in-out infinite;
+        }
+
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .permission-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .permission-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .permission-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--warning-color);
+        }
+
+        .permission-item h4 {
+            color: var(--warning-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .permission-item p {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .login-cta {
+            margin-top: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+            background-size: 30px 30px;
+            animation: float 20s linear infinite;
+            z-index: 0;
+        }
+
+        .login-cta > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-cta h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .login-cta p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .login-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* فیکس برای آیتم‌های لیست */
+        li {
+            list-style-type: none;
+        }
+
+        /* فوتر */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-light), var(--secondary-color));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            padding-right: 1rem;
+            opacity: 1;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-contact i {
+            color: var(--secondary-color);
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px) rotate(10deg);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            opacity: 0.8;
+        }
+
+        .developer-credit {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .developer-credit a {
+            color: var(--secondary-color);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .developer-credit a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 992px) {
+            .nav-menu, .header-buttons {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .mobile-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .error-section {
+                padding: 8rem 0 3rem;
+            }
+
+            .shield-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .shield {
+                width: 160px;
+                height: 160px;
+                font-size: 5rem;
+            }
+
+            .lock {
+                font-size: 3rem;
+            }
+
+            .ring:nth-child(1) {
+                width: 230px;
+                height: 230px;
+            }
+
+            .ring:nth-child(2) {
+                width: 260px;
+                height: 260px;
+            }
+
+            .ring:nth-child(3) {
+                width: 290px;
+                height: 290px;
+            }
+
+            .error-number {
+                font-size: 6rem;
+            }
+
+            .error-subtitle {
+                font-size: 2rem;
+            }
+
+            .error-actions {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .security-levels {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .permissions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-cta {
+                padding: 2rem;
+            }
+
+            .login-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .shield-container {
+                width: 200px;
+                height: 200px;
+            }
+
+            .shield {
+                width: 130px;
+                height: 130px;
+                font-size: 4rem;
+            }
+
+            .lock {
+                font-size: 2.5rem;
+            }
+
+            .error-number {
+                font-size: 5rem;
+            }
+
+            .error-subtitle {
+                font-size: 1.5rem;
+            }
+
+            .error-description {
+                font-size: 1rem;
+                padding: 1.5rem;
+            }
+
+            .mobile-menu {
+                width: 280px;
+            }
+
+            .access-permissions {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+
+{% endblock css %}
+
+
+
+
+
+
+
+
+{% block content %}
+
+    <!-- محتوای صفحه 403 -->
+    <section class="error-section">
+        <div class="container">
+            <div class="error-content">
+                
+
+                <!-- بخش بصری با سپر و قفل -->
+                <div class="error-visual">
+                    <div class="shield-container">
+                        <!-- حلقه‌های امنیتی -->
+                        <div class="security-rings">
+                            <div class="ring"></div>
+                            <div class="ring"></div>
+                            <div class="ring"></div>
+                        </div>
+                        
+                        <!-- سپر اصلی -->
+                        <div class="shield">
+                            <div class="lock">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- شماره 403 -->
+                    <div class="error-number">۴۰۳</div>
+                </div>
+
+                <!-- عنوان خطا -->
+                <h2 class="error-subtitle">دسترسی ممنوع</h2>
+
+                <!-- توضیحات -->
+                <div class="error-description">
+                    <p>متأسفانه شما دسترسی لازم برای مشاهده این صفحه را ندارید.</p>
+                    <p>این محدودیت ممکن است به دلیل سطح دسترسی کاربری یا محدودیت‌های امنیتی باشد.</p>
+                </div>
+
+                <!-- دکمه‌های عملی -->
+                <div class="error-actions">
+                    <a href="{% url "home:main" %}" class="btn btn-primary">
+                        <i class="fas fa-home"></i> بازگشت به صفحه اصلی
+                    </a>
+                    
+                    {% if not request.user.is_authenticated %}
+                    <a href="{% url "account:login" %}" class="btn btn-warning">
+                        <i class="fas fa-sign-in-alt"></i> ورود به سیستم
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url "account:contact" %}" class="btn btn-danger">
+                        <i class="fas fa-headset"></i> تماس با پشتیبانی
+                    </a>
+                </div>
+
+                <!-- سطوح دسترسی -->
+                <div class="security-levels">
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>دانش‌آموز</h3>
+                        <p>دسترسی به کلاس‌ها، برنامه درسی و تکالیف</p>
+                        {% if not request.user.is_authenticated %}
+                        <a href="{% url "account:login" %}" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">ورود دانش‌آموز</a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>معلم</h3>
+                        <p>دسترسی به پنل آموزشی، نمرات و کلاس‌ها</p>
+                        {% if not request.user.is_authenticated %}
+                        <a href="{% url "account:login" %}" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">ورود معلم</a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="security-card">
+                        <div class="security-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <h3>اولیاء</h3>
+                        <p>دسترسی به گزارشات تحصیلی فرزند</p>
+                        {% if not request.user.is_authenticated %}
+                        <a href="{% url "account:login" %}" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">ورود اولیاء</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- مجوزهای دسترسی -->
+                <div class="access-permissions">
+                    <h3><i class="fas fa-shield-alt"></i> مجوزهای مورد نیاز برای دسترسی</h3>
+                    <div class="permissions-grid">
+                        <div class="permission-item">
+                            <div class="permission-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <h4>احراز هویت</h4>
+                            <p>ورود با حساب کاربری معتبر</p>
+                        </div>
+                        
+                        <div class="permission-item">
+                            <div class="permission-icon">
+                                <i class="fas fa-user-tag"></i>
+                            </div>
+                            <h4>نقش کاربری</h4>
+                            <p>داشتن نقش مناسب (دانش‌آموز، معلم، اولیاء)</p>
+                        </div>
+                        
+                        <div class="permission-item">
+                            <div class="permission-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h4>مجوز ویژه</h4>
+                            <p>داشتن دسترسی ویژه از مدیریت</p>
+                        </div>
+                        
+                        <div class="permission-item">
+                            <div class="permission-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4>زمان‌بندی</h4>
+                            <p>دسترسی در زمان مجاز</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- دعوت به ورود -->
+                {% if not request.user.is_authenticated %}
+                <div class="login-cta">
+                    <h3><i class="fas fa-lock-open"></i> قفل دسترسی را باز کنید!</h3>
+                    <p>برای دسترسی به این بخش، لطفاً با حساب کاربری خود وارد شوید. اگر حساب کاربری ندارید، با مدیریت مدرسه تماس بگیرید تا برای شما حساب ایجاد شود.</p>
+                    <div class="login-buttons">
+                        <a href="{% url "account:login" %}" class="btn btn-warning">
+                            <i class="fas fa-sign-in-alt"></i> ورود به پنل کاربری
+                        </a>
+                        <a href="{% url "account:contact" %}" class="btn btn-outline" style="background: rgba(255,255,255,0.2); color: white; border-color: white;">
+                            <i class="fas fa-phone-alt"></i> درخواست دسترسی
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+{% block js %}
+
+    <script>
+        // منوی همبرگری
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const overlay = document.querySelector('.overlay');
+            
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // تغییر ظاهر هدر هنگام اسکرول
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+            
+            // انیمیشن حلقه‌ها
+            const rings = document.querySelectorAll('.ring');
+            rings.forEach((ring, index) => {
+                setTimeout(() => {
+                    ring.style.animation = `rotate ${25 + index * 5}s linear infinite`;
+                }, index * 500);
+            });
+            
+            // انیمیشن قفل
+            const lock = document.querySelector('.lock');
+            setInterval(() => {
+                lock.style.animation = 'none';
+                setTimeout(() => {
+                    lock.style.animation = 'lockBounce 3s ease-in-out infinite';
+                }, 10);
+            }, 6000);
+            
+            // انیمیشن سپر
+            const shield = document.querySelector('.shield');
+            setInterval(() => {
+                shield.style.animation = 'none';
+                setTimeout(() => {
+                    shield.style.animation = 'shieldGlow 2s ease-in-out infinite';
+                }, 10);
+            }, 4000);
+            
+            // افکت برای دکمه‌ها
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // افکت برای کارت‌های امنیتی
+            const securityCards = document.querySelectorAll('.security-card');
+            securityCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) rotate(1deg)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) rotate(0deg)';
+                });
+            });
+            
+            // افکت برای آیتم‌های مجوز
+            const permissionItems = document.querySelectorAll('.permission-item');
+            permissionItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // انیمیشن آیکون‌های امنیتی
+            const securityIcons = document.querySelectorAll('.security-icon');
+            securityIcons.forEach(icon => {
+                setInterval(() => {
+                    icon.style.animation = 'none';
+                    setTimeout(() => {
+                        icon.style.animation = 'float 4s ease-in-out infinite';
+                    }, 10);
+                }, 8000);
+            });
+        });
+    </script>
+
+{% endblock js %}

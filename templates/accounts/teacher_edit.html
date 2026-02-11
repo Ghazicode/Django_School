@@ -1,0 +1,1482 @@
+{% extends 'base.html' %}
+{% load account_tags %}
+{% load static %}
+
+{% block title %}ویرایش پروفایل معلم | مدرسه امام حسین (ع){% endblock title %}
+
+{% block content_meta %}ویرایش پروفایل معلم مدرسه امام حسین (ع){% endblock content_meta %}
+
+
+
+
+
+{% block css %}
+
+    <style>
+        /* متغیرهای CSS مشابه صفحات قبلی */
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+            --text-color: #334155;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset و تنظیمات پایه */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* دکمه‌ها با افکت‌های جدید */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        /* استایل پیام‌های Django */
+        .message-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .django-message {
+            padding: 1.2rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .django-message::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .message-success::before {
+            background: linear-gradient(to bottom, #10b981, #34d399);
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .message-error::before {
+            background: linear-gradient(to bottom, #dc2626, #ef4444);
+        }
+
+        .message-warning {
+            background: linear-gradient(135deg, #fef3c7, #fffbeb);
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+
+        .message-warning::before {
+            background: linear-gradient(to bottom, #f59e0b, #fbbf24);
+        }
+
+        .message-info {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .message-info::before {
+            background: linear-gradient(to bottom, #3b82f6, #60a5fa);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                right: -100%;
+                opacity: 0;
+            }
+            to {
+                right: 0;
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        /* هدر مدرن */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            color: var(--dark-color);
+        }
+
+        .nav-menu li a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .user-profile:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* منوی موبایل */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .mobile-nav {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: var(--transition);
+            color: var(--dark-color);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .mobile-nav li a:hover {
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-10px);
+        }
+
+        .mobile-nav li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .mobile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* بخش اصلی ویرایش پروفایل */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .profile-section {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: var(--shadow-xl);
+            padding: 2.5rem;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .profile-header h2 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.8rem;
+            font-weight: 800;
+        }
+
+        .profile-header p {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        /* فرم ویرایش پروفایل */
+        .profile-form .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1rem;
+        }
+
+        .profile-form .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .profile-form .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231e40af' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 1rem center;
+            background-size: 12px;
+        }
+
+        /* بخش‌های فرم */
+        .form-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(248, 250, 252, 0.7));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        }
+
+        .form-section-title {
+            font-size: 1.4rem;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+        }
+
+        .form-section-title i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .form-hint {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-hint i {
+            color: var(--secondary-color);
+        }
+
+        /* استایل ارورها */
+        .field-error {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            border-radius: 10px;
+            border-right: 4px solid #dc2626;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .field-error i {
+            font-size: 1rem;
+        }
+
+        .error-field {
+            border-color: #dc2626 !important;
+            background: linear-gradient(135deg, #fff5f5, #fff8f8) !important;
+        }
+
+        .error-field:focus {
+            border-color: #dc2626 !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
+        }
+
+        /* آپلود تصویر */
+        .file-upload {
+            border: 3px dashed rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .file-upload:hover::before {
+            opacity: 1;
+        }
+
+        .file-upload i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover i {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .file-upload p {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .file-types {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* پیش‌نمایش تصویر */
+        .image-preview-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .current-image {
+            display: inline-block;
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .current-image img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+        }
+
+        .current-image:hover img {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .preview-container {
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+
+        .preview-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            transition: var(--transition);
+        }
+
+        .preview-image:hover {
+            transform: scale(1.05) rotate(-5deg);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        /* فوتر فرم */
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .form-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .form-info i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        /* فوتر */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-light), var(--secondary-color));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            padding-right: 1rem;
+            opacity: 1;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-contact i {
+            color: var(--secondary-color);
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px) rotate(10deg);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            opacity: 0.8;
+        }
+
+        .developer-credit {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .developer-credit a {
+            color: var(--secondary-color);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .developer-credit a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 992px) {
+            .nav-menu, .header-buttons {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .mobile-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: flex-start;
+            }
+
+            .form-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .form-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .form-info {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 8rem 0 3rem;
+            }
+
+            .profile-container {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .profile-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .file-upload {
+                padding: 2rem 1.5rem;
+            }
+
+            .current-image img,
+            .preview-image {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-container {
+                padding: 1.5rem;
+            }
+
+            .profile-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-section-title {
+                font-size: 1.2rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .mobile-menu {
+                width: 280px;
+            }
+
+            .current-image img,
+            .preview-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* استایل برای لیست‌ها */
+        li {
+            list-style-type: none;
+        }
+    </style>
+
+{% endblock css %}
+
+
+
+
+{% block content %}
+
+    <!-- بخش اصلی -->
+    <main>
+        <section class="profile-section">
+            <div class="profile-container">
+                <!-- نمایش پیام‌های Django -->
+                {% if messages %}
+                <div class="message-container" style="margin-bottom: 2rem;">
+                    {% for message in messages %}
+                    <div class="django-message message-{{ message.tags }}">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle"></i>
+                        {% elif message.tags == 'error' %}
+                            <i class="fas fa-exclamation-circle"></i>
+                        {% elif message.tags == 'warning' %}
+                            <i class="fas fa-exclamation-triangle"></i>
+                        {% elif message.tags == 'info' %}
+                            <i class="fas fa-info-circle"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle"></i>
+                        {% endif %}
+                        <span>{{ message }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="profile-header">
+                    <h2>ویرایش پروفایل معلم</h2>
+                    <p>اطلاعات پروفایل خود را به روزرسانی کنید</p>
+                </div>
+
+                <form class="profile-form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- بخش اطلاعات شخصی -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-user-circle"></i>
+                            اطلاعات شخصی
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label for="full_name">{{ form.full_name.label }} <span style="color: #dc2626;">*</span></label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}
+                                {% for error in form.full_name.errors %}
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <p class="form-hint">
+                                <i class="fas fa-lightbulb"></i>
+                                نام و نام خانوادگی خود را به فارسی وارد کنید
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="full_name_en">{{ form.full_name_en.label }} <span style="color: #dc2626;">*</span></label>
+                            {{ form.full_name_en }}
+                            {% if form.full_name_en.errors %}
+                                {% for error in form.full_name_en.errors %}
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <p class="form-hint">
+                                <i class="fas fa-lightbulb"></i>
+                                نام و نام خانوادگی خود را به انگلیسی وارد کنید
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بخش اطلاعات شغلی -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-briefcase"></i>
+                            اطلاعات شغلی
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label for="description">{{ form.description.label }}</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                {% for error in form.description.errors %}
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <p class="form-hint">
+                                <i class="fas fa-lightbulb"></i>
+                                درباره خود، تخصص‌ها و تجربیات کاری توضیح دهید
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="teaching_experience">{{ form.teaching_experience.label }} <span style="color: #dc2626;">*</span></label>
+                            {{ form.teaching_experience }}
+                            {% if form.teaching_experience.errors %}
+                                {% for error in form.teaching_experience.errors %}
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <p class="form-hint">
+                                <i class="fas fa-lightbulb"></i>
+                                تعداد سال‌های سابقه تدریس خود را وارد کنید
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="degree">{{ form.degree.label }} <span style="color: #dc2626;">*</span></label>
+                            {{ form.degree }}
+                            {% if form.degree.errors %}
+                                {% for error in form.degree.errors %}
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <p class="form-hint">
+                                <i class="fas fa-lightbulb"></i>
+                                آخرین مدرک تحصیلی خود را انتخاب کنید
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بخش تصویر پروفایل -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-camera"></i>
+                            تصویر پروفایل
+                        </h3>
+                        
+                        <!-- نمایش تصویر فعلی -->
+                        {% if teacher_instance and teacher_instance.image %}
+                        <div class="image-preview-section">
+                            <div class="current-image">
+                                <img src="{{ teacher_instance.image.url }}" alt="تصویر فعلی پروفایل">
+                                <div class="image-label">تصویر فعلی</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="form-group">
+                            <label>آپلود تصویر جدید</label>
+                            <div class="file-upload" id="fileUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>برای آپلود تصویر کلیک کنید یا آن را اینجا رها کنید</p>
+                                <p class="file-types">فرمت‌های مجاز: JPG, PNG, GIF • حداکثر حجم: 2MB</p>
+                                <input type="file" name="image" id="imageUpload" class="file-input" accept="image/*">
+                            </div>
+                            {% if form.image.errors %}
+                                {% for error in form.image.errors %}
+                                    <div class="field-error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <!-- پیش‌نمایش تصویر جدید -->
+                            <div class="preview-container" id="previewContainer">
+                                <div class="current-image">
+                                    <img id="previewImage" class="preview-image" src="" alt="پیش‌نمایش تصویر">
+                                    <div class="image-label">تصویر جدید</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- خطاهای عمومی فرم -->
+                    {% if form.non_field_errors %}
+                    <div class="form-section" style="background: linear-gradient(135deg, #fee2e2, #fef2f2); border: 1px solid #fecaca;">
+                        <h3 class="form-section-title" style="color: #dc2626;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            خطاهای کلی فرم
+                        </h3>
+                        {% for error in form.non_field_errors %}
+                            <div class="field-error" style="background: transparent;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-footer">
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> ذخیره تغییرات
+                            </button>
+                            <a href="{% url 'account:teacher_profile' %}" class="btn btn-outline">
+                                <i class="fas fa-times"></i> انصراف
+                            </a>
+                        </div>
+                        <div class="form-info">
+                            <i class="fas fa-info-circle"></i>
+                            فیلدهای ستاره‌دار (*) الزامی هستند
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+{% endblock content %}
+
+
+
+
+{% block js %}
+
+    <script>
+        // منوی همبرگری
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const overlay = document.querySelector('.overlay');
+            
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // تغییر ظاهر هدر هنگام اسکرول
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+            
+            // آپلود تصویر
+            const fileUploadArea = document.getElementById('fileUploadArea');
+            const imageUpload = document.getElementById('imageUpload');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+
+            fileUploadArea.addEventListener('click', function() {
+                imageUpload.click();
+            });
+
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+                this.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+            });
+
+            fileUploadArea.addEventListener('dragleave', function() {
+                this.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                this.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+            });
+
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                this.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                
+                if (e.dataTransfer.files.length) {
+                    imageUpload.files = e.dataTransfer.files;
+                    handleImageUpload(e.dataTransfer.files[0]);
+                }
+            });
+
+            imageUpload.addEventListener('change', function() {
+                if (this.files.length) {
+                    handleImageUpload(this.files[0]);
+                }
+            });
+
+            function handleImageUpload(file) {
+                // بررسی نوع فایل
+                if (!file.type.match('image.*')) {
+                    showMessage('لطفاً فقط فایل تصویری انتخاب کنید', 'error');
+                    return;
+                }
+                
+                // بررسی حجم فایل (حداکثر 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    showMessage('حجم فایل باید کمتر از 2MB باشد', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    
+                    // انیمیشن برای تصویر جدید
+                    previewImage.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        previewImage.style.transform = 'scale(1)';
+                    }, 300);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            // نمایش پیام‌های خطا
+            function showMessage(message, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `django-message message-${type}`;
+                
+                let icon = 'fa-info-circle';
+                if (type === 'error') icon = 'fa-exclamation-circle';
+                if (type === 'success') icon = 'fa-check-circle';
+                if (type === 'warning') icon = 'fa-exclamation-triangle';
+                
+                messageDiv.innerHTML = `
+                    <i class="fas ${icon}"></i>
+                    <span>${message}</span>
+                `;
+                
+                const container = document.querySelector('.profile-container');
+                container.insertBefore(messageDiv, container.firstChild);
+                
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    messageDiv.style.transform = 'translateY(-20px)';
+                    setTimeout(() => messageDiv.remove(), 500);
+                }, 5000);
+            }
+            
+            // نمایش خودکار پیام‌های Django
+            setTimeout(() => {
+                const messages = document.querySelectorAll('.django-message');
+                messages.forEach(msg => {
+                    msg.style.animation = 'slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                });
+            }, 500);
+            
+            // برجسته کردن فیلدهای دارای خطا
+            document.querySelectorAll('.field-error').forEach(function(errorElement) {
+                const formGroup = errorElement.closest('.form-group');
+                if (formGroup) {
+                    const input = formGroup.querySelector('input, select, textarea');
+                    if (input) {
+                        input.classList.add('error-field');
+                        
+                        // حذف کلاس error-field هنگام تایپ
+                        input.addEventListener('input', function() {
+                            this.classList.remove('error-field');
+                            // حذف پیام خطای مربوطه
+                            const errorSpan = this.closest('.form-group').querySelector('.field-error');
+                            if (errorSpan) {
+                                errorSpan.style.display = 'none';
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // افکت برای دکمه‌ها
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // انیمیشن شناور برای آیکون‌ها
+            const icons = document.querySelectorAll('.fas, .fab');
+            icons.forEach((icon, index) => {
+                setTimeout(() => {
+                    icon.style.animation = `float 3s ease-in-out infinite ${index * 0.2}s`;
+                }, index * 100);
+            });
+            
+            // پالس برای کانتینر
+            const profileContainer = document.querySelector('.profile-container');
+            setInterval(() => {
+                profileContainer.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+                setTimeout(() => {
+                    profileContainer.style.boxShadow = 'var(--shadow-xl)';
+                }, 1000);
+            }, 3000);
+        });
+    </script>
+
+{% endblock js %}

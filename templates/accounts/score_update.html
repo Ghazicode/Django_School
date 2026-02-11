@@ -1,0 +1,1349 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}مدرسه امام حسین (ع) | ویرایش نمره{% endblock title %}
+
+{% block content_meta %}مدرسه امام حسین (ع) - ویرایش نمرات دانش آموزان{% endblock content_meta %}
+
+
+
+
+
+
+
+
+{% block css %}
+
+<style>
+        /* متغیرهای CSS */
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --text-color: #334155;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+        
+        li {
+            list-style-type: none;
+        }
+
+        /* تنظیمات پایه */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* هدر */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            color: var(--dark-color);
+        }
+
+        .nav-menu li a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-menu li a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* بخش اصلی */
+        .edit-grade-section {
+            margin-top: 5rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 10rem);
+        }
+
+        /* بخش اطلاعات دانش‌آموز در بالای صفحه */
+        .student-info-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            color: white;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-info-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .student-info-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-label i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .current-grade {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .grade-great {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(34, 197, 94, 0.3));
+            color: #d1fae5;
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .grade-good {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(251, 191, 36, 0.3));
+            color: #fef3c7;
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .grade-needs-improvement {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(248, 113, 113, 0.3));
+            color: #fee2e2;
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        /* کارت فرم */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-light));
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .form-title i {
+            color: var(--primary-color);
+        }
+
+        .form-subtitle {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        /* استایل‌های فرم Django */
+        .django-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label i {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .required {
+            color: var(--danger-color);
+            margin-right: 0.3rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-color); /* اضافه شد */
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: left 1.5rem center;
+            background-size: 1rem;
+            padding-left: 3rem;
+        }
+
+        /* استایل مخصوص options در select */
+        .form-control option {
+            background-color: var(--white);
+            color: var(--dark-color);
+            padding: 10px;
+            font-size: 1rem;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        /* استایل برای select باز شده */
+        .form-control:focus option {
+            background-color: var(--light-color);
+        }
+
+        /* استایل برای option انتخابی */
+        .form-control option:checked,
+        .form-control option:selected {
+            background-color: var(--primary-light);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* استایل وضعیت */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .status-average {
+            background: rgba(245, 158, 11, 0.1);
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .status-good {
+            background: rgba(16, 185, 129, 0.1);
+            color: #065f46;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-great {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1e40af;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* استایل برای خطاها */
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+            color: var(--danger-color);
+            font-size: 0.9rem;
+        }
+
+        .errorlist li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+            margin-bottom: 0.3rem;
+        }
+
+        .errorlist li:before {
+            content: '⚠️';
+        }
+
+        .form-field-error .form-control {
+            border-color: var(--danger-color);
+        }
+
+        .form-field-error .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+
+        /* نمایش نمره */
+        .grade-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .preview-label {
+            font-weight: 500;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .preview-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* دکمه‌ها */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #34d399);
+            color: #065f46;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #f87171);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        /* پیام‌ها */
+        .message-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+
+        .django-message {
+            padding: 1.2rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .django-message::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .message-success {
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .message-success::before {
+            background: linear-gradient(to bottom, #10b981, #34d399);
+        }
+
+        .message-error {
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .message-error::before {
+            background: linear-gradient(to bottom, #dc2626, #ef4444);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* فوتر */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 3rem 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* منوی موبایل */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .mobile-nav {
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: var(--transition);
+            color: var(--dark-color);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .mobile-nav li a:hover {
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(-10px);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 992px) {
+            .nav-menu, .header-buttons {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .edit-grade-section {
+                margin-top: 4rem;
+                padding: 1.5rem 0;
+            }
+
+            .student-info-header {
+                padding: 2rem;
+            }
+
+            .form-container {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .student-info-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .info-value {
+                font-size: 1.2rem;
+            }
+
+            .current-grade {
+                font-size: 1.3rem;
+                padding: 0.6rem 1.2rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .mobile-menu {
+                width: 280px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+
+            .student-info-header {
+                padding: 1.5rem;
+                border-radius: 15px;
+            }
+
+            .info-value {
+                font-size: 1.1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .form-subtitle {
+                font-size: 1rem;
+            }
+
+            .message-container {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .student-info-header {
+                padding: 1.2rem;
+            }
+
+            .form-container {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+
+{% endblock css %}
+
+
+
+
+
+
+
+
+
+
+
+{% block content %}
+
+    <!-- بخش اصلی -->
+    <main class="edit-grade-section">
+        <div class="container">
+            <!-- بخش اطلاعات دانش‌آموز -->
+            <div class="student-info-header">
+                <div class="student-info-content">
+                    <!-- نام دانش‌آموز -->
+                    <div class="info-block">
+                        <div class="info-label">
+                            <i class="fas fa-user-graduate"></i>
+                            نام دانش‌آموز
+                        </div>
+                        <div class="info-value">
+                            {{ grade.student }}
+                        </div>
+                    </div>
+
+                    <!-- نام درس -->
+                    <div class="info-block">
+                        <div class="info-label">
+                            <i class="fas fa-book"></i>
+                            نام درس
+                        </div>
+                        <div class="info-value">
+                            {{ grade.lesson.name }}
+                        </div>
+                    </div>
+
+                    <!-- نمره فعلی -->
+                    <div class="info-block">
+                        <div class="info-label">
+                            <i class="fas fa-star"></i>
+                            نمره فعلی
+                        </div>
+                        <div class="info-value">
+                            <span class="current-grade 
+                                {% if grade.score >= 17 %}grade-great
+                                {% elif grade.score >= 12 %}grade-good
+                                {% else %}grade-needs-improvement{% endif %}">
+                                {{ grade.score }}
+                            </span>
+                            <span style="font-size: 0.9rem; opacity: 0.9;">
+                                {% if grade.score >= 17 %}
+                                    (عالی)
+                                {% elif grade.score >= 12 %}
+                                    (خوب)
+                                {% else %}
+                                    (نیاز به تلاش)
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- فرم ویرایش نمره -->
+            <div class="form-container">
+                <div class="form-header">
+                    <h2 class="form-title">
+                        <i class="fas fa-edit"></i>
+                        ویرایش نمره
+                    </h2>
+                    <p class="form-subtitle">اطلاعات نمره را ویرایش کنید و ذخیره نمایید</p>
+                </div>
+
+                <form method="post" class="django-form" id="grade-form">
+                    {% csrf_token %}
+                    
+                    <!-- نمایش خطاهای کلی فرم -->
+                    {% if form.non_field_errors %}
+                    <div class="form-group">
+                        <div class="errorlist">
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="form-row">
+                        <!-- نمره اصلی -->
+                        <div class="form-group {% if form.score.errors %}form-field-error{% endif %}">
+                            <label for="{{ form.score.id_for_label }}" class="form-label">
+                                <i class="fas fa-star"></i>
+                                <span class="required">*</span>
+                                {{ form.score.label }}
+                            </label>
+                            {{ form.score }}
+                            {% if form.score.errors %}
+                            <div class="errorlist">
+                                {% for error in form.score.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="grade-preview">
+                                <span class="preview-label">پیش‌نمایش:</span>
+                                <span id="preview-score" class="preview-value 
+                                    {% if grade.score >= 17 %}grade-great
+                                    {% elif grade.score >= 12 %}grade-good
+                                    {% else %}grade-needs-improvement{% endif %}">
+                                    {{ grade.score }}
+                                </span>
+                            </div>
+                            <small class="form-text" style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                                نمره باید بین ۰ تا ۲۰ باشد (می‌تواند اعشاری باشد)
+                            </small>
+                        </div>
+
+                        <!-- نمره کلاسی -->
+                        <div class="form-group {% if form.class_activity.errors %}form-field-error{% endif %}">
+                            <label for="{{ form.class_activity.id_for_label }}" class="form-label">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                {{ form.class_activity.label }}
+                            </label>
+                            {{ form.class_activity }}
+                            {% if form.class_activity.errors %}
+                            <div class="errorlist">
+                                {% for error in form.class_activity.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <small class="form-text" style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                                نمره فعالیت کلاسی (بین ۰ تا ۲۰)
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- ماه تحصیلی -->
+                        <div class="form-group {% if form.month.errors %}form-field-error{% endif %}">
+                            <label for="{{ form.month.id_for_label }}" class="form-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span class="required">*</span>
+                                {{ form.month.label }}
+                            </label>
+                            {{ form.month }}
+                            {% if form.month.errors %}
+                            <div class="errorlist">
+                                {% for error in form.month.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- وضعیت (status) -->
+                        <div class="form-group {% if form.status.errors %}form-field-error{% endif %}">
+                            <label for="{{ form.status.id_for_label }}" class="form-label">
+                                <i class="fas fa-chart-line"></i>
+                                <span class="required">*</span>
+                                {{ form.status.label }}
+                            </label>
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                            <div class="errorlist">
+                                {% for error in form.status.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div id="status-indicator" class="status-indicator status-{% if grade.status == 'great' %}great{% elif grade.status == 'good' %}good{% else %}average{% endif %}" style="margin-top: 1rem;">
+                                <i class="fas fa-chart-bar"></i>
+                                {% if grade.status == 'great' %}
+                                    وضعیت: عالی
+                                {% elif grade.status == 'good' %}
+                                    وضعیت: خوب
+                                {% else %}
+                                    وضعیت: متوسط
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- دکمه‌های فرم -->
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i>
+                            ذخیره تغییرات
+                        </button>
+                        <a href="javascript:history.back()" class="btn btn-danger">
+                            <i class="fas fa-times"></i>
+                            انصراف
+                        </a>
+                        <a href="{% url 'account:score_list' lesson %}" class="btn btn-primary">
+                            <i class="fas fa-list"></i>
+                            لیست نمرات
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock content %}
+
+
+
+
+
+
+
+{% block js %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // منوی همبرگری
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuClose = document.querySelector('.mobile-menu-close');
+            const overlay = document.querySelector('.overlay');
+            
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // تغییر ظاهر هدر هنگام اسکرول
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+            
+            // مدیریت نمایش پیش‌نمایش نمره
+            const scoreInput = document.getElementById('{{ form.score.id_for_label }}');
+            const previewScore = document.getElementById('preview-score');
+            
+            if (scoreInput && previewScore) {
+                function updateGradePreview() {
+                    const score = parseFloat(scoreInput.value) || 0;
+                    
+                    previewScore.textContent = score.toFixed(2);
+                    
+                    // بروزرسانی کلاس رنگ
+                    previewScore.className = 'preview-value ';
+                    if (score >= 17) {
+                        previewScore.classList.add('grade-great');
+                    } else if (score >= 12) {
+                        previewScore.classList.add('grade-good');
+                    } else {
+                        previewScore.classList.add('grade-needs-improvement');
+                    }
+                    
+                    // اعتبارسنجی
+                    if (score < 0 || score > 20) {
+                        scoreInput.style.borderColor = 'var(--danger-color)';
+                        showMessage('نمره باید بین ۰ تا ۲۰ باشد.', 'error');
+                    } else {
+                        scoreInput.style.borderColor = '';
+                    }
+                }
+                
+                scoreInput.addEventListener('input', updateGradePreview);
+                window.updateGradePreview = updateGradePreview;
+                
+                // تنظیم مقدار اولیه برای inputها
+                if (scoreInput.value) {
+                    updateGradePreview();
+                }
+            }
+            
+            // مدیریت وضعیت
+            const statusSelect = document.getElementById('{{ form.status.id_for_label }}');
+            const statusIndicator = document.getElementById('status-indicator');
+            
+            if (statusSelect && statusIndicator) {
+                function updateStatusIndicator() {
+                    const status = statusSelect.value;
+                    
+                    // بروزرسانی کلاس و متن
+                    statusIndicator.className = 'status-indicator ';
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    if (status === 'great') {
+                        statusClass = 'status-great';
+                        statusText = 'وضعیت: عالی';
+                    } else if (status === 'good') {
+                        statusClass = 'status-good';
+                        statusText = 'وضعیت: خوب';
+                    } else {
+                        statusClass = 'status-average';
+                        statusText = 'وضعیت: متوسط';
+                    }
+                    
+                    statusIndicator.classList.add(statusClass);
+                    statusIndicator.innerHTML = `<i class="fas fa-chart-bar"></i> ${statusText}`;
+                }
+                
+                statusSelect.addEventListener('change', updateStatusIndicator);
+                window.updateStatusIndicator = updateStatusIndicator;
+                
+                // تنظیم وضعیت اولیه
+                if (statusSelect.value) {
+                    updateStatusIndicator();
+                }
+            }
+            
+            // اعتبارسنجی فرم
+            const form = document.getElementById('grade-form');
+            
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const score = scoreInput ? parseFloat(scoreInput.value) : NaN;
+                    const monthSelect = document.getElementById('{{ form.month.id_for_label }}');
+                    const statusSelect = document.getElementById('{{ form.status.id_for_label }}');
+                    
+                    let isValid = true;
+                    let errorMessage = '';
+                    
+                    // اعتبارسنجی نمره اصلی
+                    if (scoreInput && (isNaN(score) || score < 0 || score > 20)) {
+                        errorMessage += 'نمره اصلی باید بین ۰ تا ۲۰ باشد.\n';
+                        if (scoreInput) scoreInput.style.borderColor = 'var(--danger-color)';
+                        isValid = false;
+                    }
+                    
+                    // اعتبارسنجی ماه
+                    if (monthSelect && !monthSelect.value) {
+                        errorMessage += 'لطفاً ماه تحصیلی را انتخاب کنید.\n';
+                        monthSelect.style.borderColor = 'var(--danger-color)';
+                        isValid = false;
+                    }
+                    
+                    // اعتبارسنجی وضعیت
+                    if (statusSelect && !statusSelect.value) {
+                        errorMessage += 'لطفاً وضعیت نمره را انتخاب کنید.\n';
+                        statusSelect.style.borderColor = 'var(--danger-color)';
+                        isValid = false;
+                    }
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        showMessage(errorMessage.trim(), 'error');
+                    } else {
+                        showMessage('در حال ذخیره تغییرات...', 'info');
+                    }
+                });
+            }
+            
+            // اعتبارسنجی نمره کلاسی
+            const classActivityInput = document.getElementById('{{ form.class_activity.id_for_label }}');
+            if (classActivityInput) {
+                classActivityInput.addEventListener('input', function() {
+                    const classActivity = parseFloat(this.value);
+                    if (this.value && !isNaN(classActivity) && (classActivity < 0 || classActivity > 20)) {
+                        this.style.borderColor = 'var(--danger-color)';
+                        showMessage('نمره کلاسی باید بین ۰ تا ۲۰ باشد.', 'error');
+                    } else {
+                        this.style.borderColor = '';
+                    }
+                });
+            }
+            
+            // نمایش پیام
+            function showMessage(text, type) {
+                const messageContainer = document.querySelector('.message-container');
+                
+                if (!messageContainer) {
+                    const newContainer = document.createElement('div');
+                    newContainer.className = 'message-container';
+                    document.body.appendChild(newContainer);
+                }
+                
+                const message = document.createElement('div');
+                message.className = `django-message message-${type}`;
+                
+                let icon = 'fas fa-info-circle';
+                if (type === 'success') icon = 'fas fa-check-circle';
+                if (type === 'error') icon = 'fas fa-exclamation-circle';
+                if (type === 'warning') icon = 'fas fa-exclamation-triangle';
+                
+                message.innerHTML = `
+                    <i class="${icon}"></i>
+                    <span>${text}</span>
+                `;
+                
+                messageContainer.appendChild(message);
+                
+                // حذف پیام بعد از 5 ثانیه
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-20px)';
+                    setTimeout(() => message.remove(), 500);
+                }, 5000);
+            }
+            
+            // حذف خودکار پیام‌های قدیمی
+            setTimeout(() => {
+                const messages = document.querySelectorAll('.django-message');
+                messages.forEach(msg => {
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translateY(-20px)';
+                    setTimeout(() => msg.remove(), 500);
+                });
+            }, 10000);
+            
+            // انیمیشن‌های ورود
+            const headerInfo = document.querySelector('.student-info-header');
+            const formCard = document.querySelector('.form-container');
+            
+            if (headerInfo) {
+                headerInfo.style.opacity = '0';
+                headerInfo.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    headerInfo.style.transition = 'all 0.6s ease-out';
+                    headerInfo.style.opacity = '1';
+                    headerInfo.style.transform = 'translateY(0)';
+                }, 100);
+            }
+            
+            if (formCard) {
+                formCard.style.opacity = '0';
+                formCard.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    formCard.style.transition = 'all 0.6s ease-out 0.2s';
+                    formCard.style.opacity = '1';
+                    formCard.style.transform = 'translateY(0)';
+                }, 300);
+            }
+            
+            // تنظیم رنگ متن برای selectها (راه حل جایگزین)
+            setTimeout(function() {
+                const selects = document.querySelectorAll('select.form-control');
+                selects.forEach(select => {
+                    select.style.color = 'var(--dark-color)';
+                    // تنظیم رنگ برای options
+                    const options = select.options;
+                    for (let i = 0; i < options.length; i++) {
+                        options[i].style.color = 'var(--dark-color)';
+                        options[i].style.backgroundColor = 'var(--white)';
+                    }
+                });
+            }, 100);
+        });
+    </script>
+
+{% endblock js %}

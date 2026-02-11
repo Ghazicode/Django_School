@@ -1,0 +1,219 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <meta name="description" content="{% block content_meta %} {% endblock content_meta %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css">
+    {% block links %}{% endblock links %}
+
+
+    {% block css %} {% endblock css %}
+</head>
+
+
+
+
+<body>
+    <!-- هدر -->
+     
+
+
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap" style="font-size: 2rem;"></i>
+                <h1>مدرسه امام حسین (ع)</h1>
+            </div>
+            
+            <nav class="nav-menu">
+                <li><a href="{% url "home:main" %}">صفحه اصلی</a></li>
+                <li><a href="{% url "home:about" %}">درباره ما</a></li>
+                <li><a href="{% url "home:gallery" %}">گالری</a></li>
+                <li><a href="{% url "home:teacher" %}">معلمان</a></li>
+                <li><a href="{% url "blog:main" %}">مقالات</a></li>
+                <li><a href="{% url "home:news" %}">اخبار</a></li>
+                <li><a href="{% url "account:contact" %}">تماس با ما</a></li>
+                {% if request.user.is_superuser or request.user.is_teacher %}
+                <li><a href="{% url "account:lessons" %}">دروس</a></li>
+                {% elif request.user.is_parents %}
+                <li><a href="{% url "account:comment" %}">ثبت نظر والدین</a></li>
+                {% endif %}
+            </nav>
+            
+            {% if request.user.is_authenticated %}
+            <div class="header-buttons">
+                {% if request.user.is_superuser %}
+                    <a href="/cp-7x9a2b7f3e1d8c5b4" class="btn btn-primary">{{ request.user.profiles.first_name }} {{ request.user.profiles.last_name }}</a>
+                {% elif request.user.is_teacher %}
+                    <a href="{% url "account:teacher_profile" %}" class="btn btn-primary">{{ request.user.teachers.full_name }}</a>
+                {% elif request.user.is_student %}
+                    <a href="{% url "account:student_profile" %}" class="btn btn-primary">{{ request.user.students.first_name }} {{ request.user.students.last_name }}</a>           
+                {% elif request.user.is_parents %}
+                    <a href="{% url "account:parents_profile" %}" class="btn btn-primary">{{ request.user.parents.first_name }} {{ request.user.parents.last_name }}</a>           
+                {% elif request.user.is_user %}
+                    <a href="#" class="btn btn-primary">{{ request.user.newusers.full_name }}</a>
+                {% endif %}
+                <a href="{% url 'account:logout' %}" class="btn btn-danger">خروج</a>
+            </div>
+            {% else %}
+            <div class="header-buttons">
+                <a href="{% url "account:login" %}" class="btn btn-outline">ورود</a>
+            </div>
+            {% endif %}
+            
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- منوی موبایل -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap" style="font-size: 1.5rem;"></i>
+                <h2>مدرسه امام حسین (ع)</h2>
+            </div>
+            <div class="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <ul class="mobile-nav">
+            <li><a href="{% url "home:main" %}" class="active"><i class="fas fa-home"></i>صفحه اصلی</a></li>
+            <li><a href="{% url "home:about" %}"><i class="fas fa-info-circle"></i>درباره ما</a></li>
+            <li><a href="{% url "home:gallery" %}"><i class="fas fa-images"></i>گالری</a></li>
+            <li><a href="{% url "home:teacher" %}"><i class="fas fa-chalkboard-teacher"></i>معلمان</a></li>
+            <li><a href="{% url "blog:main" %}"><i class="fas fa-newspaper"></i>مقالات</a></li>
+            <li><a href="{% url "home:news" %}"><i class="fas fa-bullhorn"></i>اخبار</a></li>
+            <li><a href="{% url "account:contact" %}"><i class="fas fa-phone-alt"></i>تماس با ما</a></li>
+            {% if request.user.is_superuser or request.user.is_teacher %}
+                <li><a href="{% url "account:lessons" %}"><i class="fas fa-book"></i>دروس</a></li>
+            {% elif request.user.is_parents %}
+            <li><a href="{% url "account:comment" %}"><i class="fas fa-comment"></i>ثبت نظر والدین</a></li>
+            {% endif %}
+        </ul>
+        
+        {% if request.user.is_authenticated %}
+        <div class="mobile-buttons">
+            {% if request.user.is_superuser %}
+                <a href="/cp-7x9a2b7f3e1d8c5b4" class="btn btn-primary">{{ request.user.profiles.first_name }} {{ request.user.profiles.last_name }}</a>
+            {% elif request.user.is_teacher %}
+                <a href="{% url "account:teacher_profile" %}" class="btn btn-primary">{{ request.user.teachers.full_name }}</a>
+            {% elif request.user.is_student %}
+                <a href="{% url "account:student_profile" %}" class="btn btn-primary">{{ request.user.students.first_name }} {{ request.user.students.last_name }}</a>           
+            {% elif request.user.is_parents %}
+                <a href="{% url "account:parents_profile" %}" class="btn btn-primary">{{ request.user.parents.first_name }} {{ request.user.parents.last_name }}</a>           
+            {% elif request.user.is_user %}
+                <a href="#" class="btn btn-primary">{{ request.user.newusers.full_name }}</a>
+            {% endif %}
+            <a href="{% url 'account:logout' %}" class="btn btn-danger">خروج</a>
+        </div>
+        {% else %}
+        <div class="mobile-buttons">
+            <a href="{% url "account:login" %}" class="btn btn-outline">ورود</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="overlay"></div>
+
+
+
+{% if messages %}
+    <div class="message-container" style="position: fixed; top: 100px; right: 20px; z-index: 1000; max-width: 400px;">
+        {% for message in messages %}
+        <div class="django-message message-{{ message.tags }}">
+            {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle"></i>
+            {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle"></i>
+            {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle"></i>
+            {% elif message.tags == 'info' %}
+                <i class="fas fa-info-circle"></i>
+            {% else %}
+                <i class="fas fa-info-circle"></i>
+            {% endif %}
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+{% block content %} {% endblock content %}
+
+
+
+    <!-- فوتر -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>درباره مدرسه</h3>
+                    <p>مدرسه امام حسین با هدف ارائه آموزش‌های نوین و با کیفیت، محیطی پویا برای رشد استعدادهای دانش‌آموزان فراهم کرده است.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>لینک‌های سریع</h3>
+                    <ul class="footer-links">
+                        <li><a href="{% url "home:main" %}"><i class="fas fa-arrow-left"></i> صفحه اصلی</a></li>
+                        <li><a href="{% url "home:about" %}"><i class="fas fa-arrow-left"></i> درباره ما</a></li>
+                        <li><a href="{% url "home:gallery" %}"><i class="fas fa-arrow-left"></i>گالری</a></li>
+                        <li><a href="{% url "home:teacher" %}"><i class="fas fa-arrow-left"></i> معلمان</a></li>
+                        <li><a href="{% url "home:news" %}"><i class="fas fa-arrow-left"></i> اخبار</a></li>
+                        <li><a href="{% url "account:contact" %}"><i class="fas fa-arrow-left"></i> تماس با ما</a></li>
+                        <li><a href="{% url "account:change_password" %}"><i class="fas fa-arrow-left"></i>تغییر رمز عبور</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>تماس با ما</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>تهران، خیابان ولیعصر، نرسیده به میدان ولیعصر، پلاک ۱۲۳۴</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>۰۲۱-۱۲۳۴۵۶۷۸</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@smartschool.ir</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>شنبه تا چهارشنبه: ۷:۳۰ تا ۱۵:۳۰</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>کلیه حقوق این وب‌سایت متعلق به مدرسه امام حسین می‌باشد. © ۱۴۰۲</p>
+                <p class="developer-credit">توسعه و طراحی توسط: <a href="https://amirghazikhani.ir">AmirGhaziKhani</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    {% block js %} {% endblock js %}
+    
+</body>
+</html>
+
+
+
