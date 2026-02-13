@@ -46,3 +46,30 @@
    source venv/bin/activate
    
    ```
+
+3. ### Install dependencies
+   ``` bash
+   pip install -r requirements.txt
+   ```
+
+4. ### Apply migrations
+   ``` bash
+   python manage.py migrate
+   ```
+
+5. ### Run the development server
+   ``` bash
+   python manage.py runserver
+   ```
+
+> Access the application at: http://127.0.0.1:8000/
+
+
+
+
+
+
+
+
+
+
