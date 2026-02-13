@@ -35,3 +35,14 @@
    git clone https://github.com/Ghazicode/Django_School.git
    cd Django_School/ 
    ```
+2. ### Create and activate a virtual environment
+   ``` bash
+   python -m venv venv
+   
+   # Windows
+   venv\Scripts\activate
+
+   # Linux / macOS
+   source venv/bin/activate
+   
+   ```
