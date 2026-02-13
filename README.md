@@ -6,5 +6,7 @@
  ---
 
 
-### Technologies
-- Backend: Python, Django 
+## Technologies
+- Backend: Python, Django
+- Frontend: HTML, CSS, JavaScript
+- Database: sqlite
