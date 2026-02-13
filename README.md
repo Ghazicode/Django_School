@@ -31,7 +31,7 @@
 
 ## Installation & Setup
 1. ### Clone the project
-   ```
+   ``` bash
    git clone https://github.com/Ghazicode/Django_School.git
    cd Django_School/ 
    ```
