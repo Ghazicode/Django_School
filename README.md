@@ -10,3 +10,18 @@
 - Backend: Python, Django
 - Frontend: HTML, CSS, JavaScript
 - Database: sqlite
+
+
+---
+
+
+## Features
+- User registration & login
+- Registering points for students
+- Panel for students
+- Panel for parents
+- Panel for teachers
+- Student attendance and absence
+- Writing an article
+- Registering student complaints
+ 
