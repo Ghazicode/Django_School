@@ -4,3 +4,7 @@
 
 
  ---
+
+
+### Technologies
+- Backend: Python, Django 
