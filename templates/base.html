@@ -33,17 +33,17 @@
             </div>
             
             <nav class="nav-menu">
-                <li><a href="{% url "home:main" %}">صفحه اصلی</a></li>
-                <li><a href="{% url "home:about" %}">درباره ما</a></li>
-                <li><a href="{% url "home:gallery" %}">گالری</a></li>
-                <li><a href="{% url "home:teacher" %}">معلمان</a></li>
-                <li><a href="{% url "blog:main" %}">مقالات</a></li>
-                <li><a href="{% url "home:news" %}">اخبار</a></li>
-                <li><a href="{% url "account:contact" %}">تماس با ما</a></li>
+                <li><a href="{% url 'home:main' %}" class="{% if request.resolver_match.view_name == 'home:main' %} active {% endif %}">صفحه اصلی</a></li>
+                <li><a href="{% url 'home:about' %}" class="{% if request.resolver_match.view_name == 'home:about' %} active {% endif %}">درباره ما</a></li>
+                <li><a href="{% url 'home:gallery' %}" class="{% if request.resolver_match.view_name == 'home:gallery' %} active {% endif %}">گالری</a></li>
+                <li><a href="{% url 'home:teacher' %}" class="{% if request.resolver_match.view_name == 'home:teacher' %} active {% endif %}">معلمان</a></li>
+                <li><a href="{% url 'blog:main' %}" class="{% if request.resolver_match.view_name == 'blog:main' %} active {% endif %}">مقالات</a></li>
+                <li><a href="{% url 'home:news' %}" class="{% if request.resolver_match.view_name == 'home:news' %} active {% endif %}">اخبار</a></li>
+                <li><a href="{% url 'account:contact' %}" class="{% if request.resolver_match.view_name == 'account:contact' %} active {% endif %}">تماس با ما</a></li>
                 {% if request.user.is_superuser or request.user.is_teacher %}
-                <li><a href="{% url "account:lessons" %}">دروس</a></li>
+                <li><a href="{% url 'account:lessons' %}" class="{% if request.resolver_match.view_name == 'account:lessons' %} active {% endif %}">دروس</a></li>
                 {% elif request.user.is_parents %}
-                <li><a href="{% url "account:comment" %}">ثبت نظر والدین</a></li>
+                <li><a href="{% url 'account:comment' %}" class="{% if request.resolver_match.view_name == 'account:comment' %} active {% endif %}">ثبت نظر والدین</a></li>
                 {% endif %}
             </nav>
             
@@ -52,11 +52,11 @@
                 {% if request.user.is_superuser %}
                     <a href="/cp-7x9a2b7f3e1d8c5b4" class="btn btn-primary">{{ request.user.profiles.first_name }} {{ request.user.profiles.last_name }}</a>
                 {% elif request.user.is_teacher %}
-                    <a href="{% url "account:teacher_profile" %}" class="btn btn-primary">{{ request.user.teachers.full_name }}</a>
+                    <a href="{% url 'account:teacher_profile' %}" class="btn btn-primary">{{ request.user.teachers.full_name }}</a>
                 {% elif request.user.is_student %}
-                    <a href="{% url "account:student_profile" %}" class="btn btn-primary">{{ request.user.students.first_name }} {{ request.user.students.last_name }}</a>           
+                    <a href="{% url 'account:student_profile' %}" class="btn btn-primary">{{ request.user.students.first_name }} {{ request.user.students.last_name }}</a>           
                 {% elif request.user.is_parents %}
-                    <a href="{% url "account:parents_profile" %}" class="btn btn-primary">{{ request.user.parents.first_name }} {{ request.user.parents.last_name }}</a>           
+                    <a href="{% url 'account:parents_profile' %}" class="btn btn-primary">{{ request.user.parents.first_name }} {{ request.user.parents.last_name }}</a>           
                 {% elif request.user.is_user %}
                     <a href="#" class="btn btn-primary">{{ request.user.newusers.full_name }}</a>
                 {% endif %}
@@ -64,7 +64,7 @@
             </div>
             {% else %}
             <div class="header-buttons">
-                <a href="{% url "account:login" %}" class="btn btn-outline">ورود</a>
+                <a href="{% url 'account:login' %}" class="btn btn-outline">ورود</a>
             </div>
             {% endif %}
             
