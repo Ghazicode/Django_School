@@ -25,3 +25,13 @@
 - Writing an article
 - Registering student complaints
  
+
+
+---
+
+## Installation & Setup
+1. ### Clone the project
+   ```
+   git clone https://github.com/Ghazicode/Django_School.git
+   cd Django_School/ 
+   ```
