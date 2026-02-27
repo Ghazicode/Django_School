@@ -184,6 +184,10 @@ class NewUserAdmin(admin.ModelAdmin):
     list_display = ("user", "full_name", "phone_number", "created_date")
 
 
+class AssignmentAdmin(admin.ModelAdmin):
+    list_display = ("teacher", "lesson", "content", "created_date")
+
+
 admin.site.register(models.User, CustomUserAdmin)
 admin.site.register(models.ProfileAdmin, CustomUserProfile)
 admin.site.register(models.Teacher, TeacherAdmin)
@@ -195,3 +199,4 @@ admin.site.register(models.Lesson, LessonAdmin)
 admin.site.register(models.Grade, GradeAdmin)
 admin.site.register(models.AttendanceRecord, AttendanceRecordAdmin)
 admin.site.register(models.NewUser, NewUserAdmin)
+admin.site.register(models.Assignment, AssignmentAdmin)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Teacher, Grade, Comment
+from .models import Teacher, Grade, Comment, Assignment
 from django.core import validators
 from home.models import ContactUs
 from django_summernote.widgets import SummernoteWidget

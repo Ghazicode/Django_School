@@ -364,3 +364,20 @@ class AttendanceRecord(models.Model):
 
     def __str__(self):
         return self.student.first_name
+
+
+class Assignment(models.Model):
+    teacher = models.ForeignKey(Teacher, models.CASCADE, related_name="assignments")
+    lesson = models.ForeignKey(
+        Lesson, on_delete=models.CASCADE, related_name="assignments"
+    )
+    content = models.TextField()
+    created_date = jmodels.jDateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.lesson.name
+
+    class Meta:
+        ordering = ("-id",)
+        verbose_name = "تکلیف"
+        verbose_name_plural = "تکالیف"

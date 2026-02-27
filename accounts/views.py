@@ -24,6 +24,7 @@ from .models import (
     Parents,
     AttendanceRecord,
     NewUser,
+    Assignment,
 )
 from django.http import Http404
 from blog.models import Article
@@ -907,3 +908,40 @@ class AttendanceRecordView(View):
         except Exception as e:
             messages.error(request, f"❌ خطا در ذخیره‌سازی: {str(e)}")
             return redirect("account:attendancerecord", pk)
+
+
+class AssignmentView(View):
+    def get(self, request):
+        user = request.user
+        if user.is_authenticated:
+            if user.is_teacher:
+                lessons = Lesson.objects.filter(teacher=user.teachers)
+            else:
+                raise Http404()
+        else:
+            raise Http404()
+
+        return render(request, "accounts/assignment.html", {"lessons": lessons})
+
+    def post(self, request):
+        user = request.user
+        if user.is_authenticated:
+            if user.is_teacher:
+                try:
+                    lesson_id = request.POST.get("lesson")
+                    content = request.POST.get("content")
+                    lesson = Lesson.objects.get(teacher=user.teachers, id=lesson_id)
+                    Assignment.objects.create(
+                        teacher=user.teachers, lesson=lesson, content=content
+                    )
+                    messages.add_message(
+                        request, messages.SUCCESS, "تکلیف با موفقیت ذخیره شد"
+                    )
+                    return redirect("home:main")
+                except Lesson.DoesNotExist:
+                    messages.add_message(request, messages.WARNING, "درس یافت نشد")
+                    raise Http404()
+            else:
+                raise Http404()
+        else:
+            raise Http404()

@@ -28,6 +28,7 @@ urlpatterns = [
         name="score_delete",
     ),
     #   end panel
+    path("assignment/create", views.AssignmentView.as_view(), name='assignment_create'),
     path("comment", views.CommentView.as_view(), name="comment"),
     path("contact", views.ContactUsView.as_view(), name="contact"),
     path("logout", views.user_logout, name="logout"),
