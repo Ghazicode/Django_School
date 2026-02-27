@@ -367,11 +367,11 @@ class AttendanceRecord(models.Model):
 
 
 class Assignment(models.Model):
-    teacher = models.ForeignKey(Teacher, models.CASCADE, related_name="assignments")
+    teacher = models.ForeignKey(Teacher, models.CASCADE, related_name="assignments", verbose_name='معلم')
     lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="assignments"
-    )
+        Lesson, on_delete=models.CASCADE, related_name="assignments", verbose_name='درس')
     content = models.TextField()
+    status = models.BooleanField(default=False, verbose_name='وضعیت')
     created_date = jmodels.jDateField(auto_now_add=True)
 
     def __str__(self):

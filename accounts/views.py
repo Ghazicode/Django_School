@@ -7,6 +7,7 @@ from .forms import (
     RegisterForm,
     ScoreUpdateForm,
     ParentCommentForm,
+    AssignmentUpdateForm
 )
 from blog.forms import ArticleForm
 from django.views import View
@@ -336,6 +337,7 @@ class TeacherProfileView(View):
                     teacher = Teacher.objects.get(user=user)
                     lessons = Lesson.objects.filter(teacher=teacher)
                     teacher_contact = TeacherContact.objects.filter(teacher=teacher)
+                    teacher_assignments = Assignment.objects.filter(teacher = user.teachers)
 
                 except Teacher.DoesNotExist:
                     messages.add_message(
@@ -355,6 +357,7 @@ class TeacherProfileView(View):
                 "lessons": lessons,
                 "teacher_contact": teacher_contact,
                 "articles": articles,
+                'teacher_assignments':teacher_assignments
             },
         )
 
@@ -937,7 +940,7 @@ class AssignmentView(View):
                     messages.add_message(
                         request, messages.SUCCESS, "تکلیف با موفقیت ذخیره شد"
                     )
-                    return redirect("home:main")
+                    return redirect('account:teacher_profile') 
                 except Lesson.DoesNotExist:
                     messages.add_message(request, messages.WARNING, "درس یافت نشد")
                     raise Http404()
@@ -945,3 +948,48 @@ class AssignmentView(View):
                 raise Http404()
         else:
             raise Http404()
+
+
+class AssignmentUpdateView(View):
+    def get(self, request, pk):
+        user = request.user
+        if user.is_authenticated:
+            if user.is_teacher:
+                try:
+                    lessons = Lesson.objects.filter(teacher = user.teachers)
+                    assignment = Assignment.objects.get(id = pk, teacher = user.teachers)
+                    form = AssignmentUpdateForm(instance=assignment)
+                except Assignment.DoesNotExist:
+                    raise Http404()
+        return render(request, 'accounts/assignment_update.html', {'form':form, 'lessons':lessons})
+    
+
+    def post(self, request, pk):
+        user = request.user
+        if user.is_authenticated:
+            if user.is_teacher:
+                try:
+                    lessons = Lesson.objects.filter(teacher = user.teachers)
+                    assignment = Assignment.objects.get(id = pk, teacher = user.teachers)
+                    form = AssignmentUpdateForm(request.POST, instance=assignment)
+                    if form.is_valid:
+                        form.save()
+                        messages.add_message(request, messages.SUCCESS, 'تکلیف با موفقیت بروزرسانی شد')
+                        return redirect('account:teacher_profile') 
+                except Assignment.DoesNotExist:
+                    raise Http404()
+        return render(request, 'accounts/assignment_update.html', {'form':form, 'lessons':lessons})
+
+
+
+class AssignmentDeleteView(View):
+    def get(self, request, pk):
+        user = request.user
+        if user.is_authenticated:
+            if user.is_teacher:
+                Assignment.objects.get(teacher = user.teachers, id = pk).delete()
+                return redirect('account:teacher_profile')
+            else:
+                raise Http404()
+        raise Http404()
+    

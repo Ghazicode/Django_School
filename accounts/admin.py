@@ -185,7 +185,7 @@ class NewUserAdmin(admin.ModelAdmin):
 
 
 class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ("teacher", "lesson", "content", "created_date")
+    list_display = ("teacher", "lesson", "content", "status", "created_date")
 
 
 admin.site.register(models.User, CustomUserAdmin)

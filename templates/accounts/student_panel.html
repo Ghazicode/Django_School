@@ -1189,6 +1189,85 @@
                 </div>
                 {% endif %}
             </section>
+            <section class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-calendar-check"></i>
+                        حضور و غیاب
+                    </h2>
+                </div>
+
+                {% if attendancerecords %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>نام درس</th>
+                                <th>وضعیت حضور</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for attendancerecord in attendancerecords %}
+                            <tr>
+                                <td>{{ attendancerecord.created_date|date:'Y/m/d' }}</td>
+                                <td>{{ attendancerecord.lesson }}</td>
+                                <td>
+                                    {% if attendancerecord.status == 'present' %}
+                                    <span class="status-badge badge-present">
+                                        <i class="fas fa-check-circle"></i> حاضر
+                                    </span>
+                                    {% elif attendancerecord.status == 'absent' %}
+                                    <span class="status-badge badge-absent">
+                                        <i class="fas fa-times-circle"></i> غایب
+                                    </span>
+                                    {% elif attendancerecord.status == 'late' %}
+                                    <span class="status-badge badge-late">
+                                        <i class="fas fa-clock"></i> تاخیر
+                                    </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- خلاصه حضور و غیاب -->
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="summary-value">{% attendancerecord_count student 'present' %}</div>
+                        <div class="summary-label">حضور</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="summary-value">{% attendancerecord_count student 'late' %}</div>
+                        <div class="summary-label">تأخیر</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                        <div class="summary-value">{% attendancerecord_count student 'absent' %}</div>
+                        <div class="summary-label">غیبت</div>
+                    </div>
+                    
+                    
+                {% else %}
+                <div style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-calendar-alt" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1.5rem;"></i>
+                    <h3 style="color: var(--dark-color); margin-bottom: 1rem;">هنوز رکورد حضور و غیابی ثبت نشده است</h3>
+                    <p style="color: var(--text-color); margin-bottom: 2rem;">اطلاعات حضور و غیاب به زودی در این بخش نمایش داده می‌شود</p>
+                </div>
+                {% endif %}
+            </section>
         </div>
     </main>
 

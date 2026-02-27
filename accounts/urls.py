@@ -11,8 +11,7 @@ urlpatterns = [
     #   start panel
     path("teacher", views.TeacherProfileView.as_view(), name="teacher_profile"),
     path(
-        "lesson/<int:pk>", views.AttendanceRecordView.as_view(), name="attendancerecord"
-    ),
+        "lesson/<int:pk>", views.AttendanceRecordView.as_view(), name="attendancerecord"),
     path("student", views.StudentPanel.as_view(), name="student_profile"),
     path("parents", views.ParentsPanel.as_view(), name="parents_profile"),
     path("lessons", views.LessonListView.as_view(), name="lessons"),
@@ -29,6 +28,8 @@ urlpatterns = [
     ),
     #   end panel
     path("assignment/create", views.AssignmentView.as_view(), name='assignment_create'),
+    path("assignment/update/<int:pk>", views.AssignmentUpdateView.as_view(), name='assignment_update'),
+    path("assignment/delete/<int:pk>", views.AssignmentDeleteView.as_view(), name='assignment_delete'),
     path("comment", views.CommentView.as_view(), name="comment"),
     path("contact", views.ContactUsView.as_view(), name="contact"),
     path("logout", views.user_logout, name="logout"),

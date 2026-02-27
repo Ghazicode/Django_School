@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}مدرسه امام حسین (ع) | ثبت تکالیف {% endblock title %}
+{% block title %}مدرسه امام حسین (ع) | بروزرسانی تکالیف{% endblock title %}
 
-{% block content_meta %}ثبت تکالیف مدرسه امام حسین (ع){% endblock content_meta %}
+{% block content_meta %}بروزرسانی تکالیف مدرسه امام حسین (ع){% endblock content_meta %}
 
 
 
@@ -560,14 +560,14 @@
         margin-bottom: 1.5rem;
     }
 
-    .remember-me {
+    .status {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 0.95rem;
     }
 
-    .remember-me input[type="checkbox"] {
+    .status input[type="checkbox"] {
         width: 20px;
         height: 20px;
         border-radius: 5px;
@@ -576,12 +576,12 @@
         transition: var(--transition);
     }
 
-    .remember-me input[type="checkbox"]:checked {
+    .status input[type="checkbox"]:checked {
         background-color: var(--primary-color);
         border-color: var(--primary-color);
     }
 
-    .remember-me label {
+    .status label {
         margin-bottom: 0;
         cursor: pointer;
         user-select: none;
@@ -1005,6 +1005,7 @@
 
             <form class="assignment-form" action="" method="post">
                 {% csrf_token %}
+                
 
                 <div class="form-group">
                     <label for="">درس</label>
@@ -1015,9 +1016,18 @@
                     </select>
                 </div>
 
+
                 <div class="form-group">
                     <label for="">توضیحات</label>
-                <textarea name="content" class="form-control" id="" placeholder="تکالیف مربوطه را بنویسید..."></textarea>
+                {{ form.content }}
+                </div>
+
+                <div class="form-options">
+                    <div class="status">
+                    {{ form.status }}
+                    <label for="status">وضعیت</label>
+                    </div>
+                    
                 </div>
                 <button type="submit" class="assignment-btn">
                     <i class="fas fa-sign-in-alt"></i> ثبت تکلیف

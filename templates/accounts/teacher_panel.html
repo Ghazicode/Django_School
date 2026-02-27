@@ -1,15 +1,20 @@
 {% load account_tags %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>پنل معلم | مدرسه امام حسین (ع)</title>
     <meta name="description" content="پنل مدیریت معلمان مدرسه امام حسین (ع) - مدیریت نمرات، مقالات و پروفایل">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet"
+        type="text/css">
     <style>
         :root {
             --primary-color: #1e40af;
@@ -61,7 +66,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        button, input, select, textarea {
+        button,
+        input,
+        select,
+        textarea {
             font-family: inherit;
             font-size: inherit;
             -webkit-tap-highlight-color: transparent;
@@ -108,7 +116,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
             transform: translateX(-100%);
             transition: transform 0.6s;
         }
@@ -156,6 +164,7 @@
                 left: -100%;
                 opacity: 0;
             }
+
             to {
                 left: 20px;
                 opacity: 1;
@@ -231,6 +240,7 @@
                 transform: translateY(-20px) scale(0.95);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0) scale(1);
                 opacity: 1;
@@ -445,6 +455,7 @@
                 right: -100%;
                 opacity: 0;
             }
+
             to {
                 right: 0;
                 opacity: 1;
@@ -670,6 +681,7 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1288,13 +1300,14 @@
             .main-content {
                 padding: 1.5rem;
             }
-            
+
             .classes-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
         }
 
         @media (max-width: 992px) {
+
             .nav-menu,
             .header-buttons .btn-outline {
                 display: none;
@@ -1530,25 +1543,25 @@
             .page-title {
                 font-size: 1.2rem;
             }
-            
+
             .card {
                 padding: 1rem;
             }
-            
+
             .grade-fields {
                 grid-template-columns: 1fr;
             }
-            
+
             .lesson-tab {
                 min-width: 90px;
                 font-size: 0.8rem;
                 padding: 0.5rem 0.7rem;
             }
-            
+
             .mobile-menu {
                 width: 260px;
             }
-            
+
             .profile-avatar {
                 width: 90px;
                 height: 90px;
@@ -1561,8 +1574,15 @@
 
         /* انیمیشن شناور */
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(5deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(5deg);
+            }
         }
 
         /* انیمیشن برای آیکون‌ها */
@@ -1578,7 +1598,7 @@
 
         .sidebar::-webkit-scrollbar-track,
         .messages-list::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 2px;
         }
 
@@ -1590,6 +1610,7 @@
 
         /* جلوگیری از زوم در فیلدهای عددی در iOS */
         @supports (-webkit-touch-callout: none) {
+
             .grade-input,
             .form-control {
                 font-size: 16px !important;
@@ -1676,15 +1697,15 @@
         {% for message in messages %}
         <div class="django-message message-{{ message.tags }}">
             {% if message.tags == 'success' %}
-                <i class="fas fa-check-circle"></i>
+            <i class="fas fa-check-circle"></i>
             {% elif message.tags == 'error' %}
-                <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
             {% elif message.tags == 'warning' %}
-                <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-exclamation-triangle"></i>
             {% elif message.tags == 'info' %}
-                <i class="fas fa-info-circle"></i>
+            <i class="fas fa-info-circle"></i>
             {% else %}
-                <i class="fas fa-info-circle"></i>
+            <i class="fas fa-info-circle"></i>
             {% endif %}
             <span>{{ message }}</span>
         </div>
@@ -1710,9 +1731,9 @@
             <div class="header-buttons">
                 <div class="user-profile">
                     {% if request.user.teachers.image %}
-                        <div class="user-avatar">
-                            <img src="{{ request.user.teachers.image.url }}" alt="{{ request.user.teachers.full_name }}">
-                        </div>
+                    <div class="user-avatar">
+                        <img src="{{ request.user.teachers.image.url }}" alt="{{ request.user.teachers.full_name }}">
+                    </div>
                     {% else %}
                     <div class="user-avatar">{{ request.user.teachers.full_name|truncate_chars:1 }}</div>
                     {% endif %}
@@ -1746,7 +1767,8 @@
 
         <ul class="mobile-nav">
             <li><a href="{% url 'home:main' %}"><i class="fas fa-home"></i>صفحه اصلی</a></li>
-            <li><a href="{% url 'account:teacher_profile' %}" class="active"><i class="fas fa-chalkboard-teacher"></i>پنل معلم</a></li>
+            <li><a href="{% url 'account:teacher_profile' %}" class="active"><i
+                        class="fas fa-chalkboard-teacher"></i>پنل معلم</a></li>
             <li><a href="{% url 'blog:main' %}"><i class="fas fa-newspaper"></i>مقاله ها</a></li>
             <li><a href="{% url 'home:news' %}"><i class="fas fa-bullhorn"></i>اخبار</a></li>
         </ul>
@@ -1774,13 +1796,13 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link" data-target="articles">
-                       
-                {% else  %}
+
+                        {% else %}
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link active" data-target="articles">
-                        
-                {% endif %}
-                <i class="fas fa-pen"></i>
+
+                        {% endif %}
+                        <i class="fas fa-pen"></i>
                         <span>مدیریت مقاله</span>
                     </a>
                 </li>
@@ -1802,8 +1824,14 @@
                         <span>پیام‌ها</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-target="my-assignments">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>تکالیف من</span>
+                    </a>
+                </li>
             </ul>
-            
+
             <!-- دکمه خروج در سایدبار -->
             <div class="sidebar-logout">
                 <a href="{% url 'account:logout' %}" class="sidebar-logout-btn">
@@ -1816,7 +1844,7 @@
         <!-- محتوای اصلی -->
         <main class="main-content">
             <!-- وارد کردن نمره -->
-             {% if request.user.teachers.status == True %}
+            {% if request.user.teachers.status == True %}
             <section id="grades" class="page-section active">
                 <div class="page-header">
                     <h1 class="page-title">وارد کردن نمرات</h1>
@@ -1838,32 +1866,33 @@
                 {% for lesson in lessons %}
                 <div id="{{ lesson.name }}" class="lesson-section">
                     <!-- فرم ثبت دسته‌جمعی نمرات -->
-                    <form action="{% url 'account:teacher_profile' %}" method="post" class="grade-form" id="grade-form-{{ lesson.id }}">
+                    <form action="{% url 'account:teacher_profile' %}" method="post" class="grade-form"
+                        id="grade-form-{{ lesson.id }}">
                         {% csrf_token %}
-                        
+
                         <div class="card">
                             <div class="card-header">
                                 <h2 class="card-title">{{ lesson.name }}</h2>
                             </div>
-                            
+
                             <!-- ابزارهای دسته‌جمعی -->
                             <div class="bulk-actions">
                                 <button type="button" class="fill-all-btn" data-lesson="{{ lesson.id }}">
                                     <i class="fas fa-fill-drip"></i>
                                     پر کردن همه نمرات
                                 </button>
-                                
+
                                 <div class="student-count">
                                     <i class="fas fa-users"></i>
                                     {{ lesson.student.all|length }} دانش‌آموز
                                 </div>
-                                
+
                                 <button type="submit" class="bulk-submit-btn">
                                     <i class="fas fa-save"></i>
                                     ثبت همه نمرات
                                 </button>
                             </div>
-                            
+
                             <div class="grades-container">
                                 {% for student in lesson.student.all %}
                                 <div class="student-grade-item" data-student-id="{{ student.user.username }}">
@@ -1871,53 +1900,40 @@
                                         <div class="student-name">{{ student }}</div>
                                         <div class="student-username">@{{ student.user.username }}</div>
                                     </div>
-                                    
+
                                     <!-- فیلدهای مخفی برای شناسایی دانش‌آموز و درس -->
                                     <input type="hidden" name="students[]" value="{{ student.user.username }}">
                                     <input type="hidden" name="lessons[]" value="{{ lesson.name }}">
-                                    
+
                                     <div class="grade-fields">
                                         <div class="grade-field">
                                             <label for="score-{{ student.id }}-{{ lesson.id }}">
                                                 <i class="fas fa-chart-line"></i>
                                                 نمره درس
                                             </label>
-                                            <input id="score-{{ student.id }}-{{ lesson.id }}" 
-                                                   name="scores[]" 
-                                                   type="number" 
-                                                   class="grade-input score-input" 
-                                                   min="0" 
-                                                   max="20" 
-                                                   step="0.1" 
-                                                   placeholder="0-20" 
-                                                   required>
+                                            <input id="score-{{ student.id }}-{{ lesson.id }}" name="scores[]"
+                                                type="number" class="grade-input score-input" min="0" max="20"
+                                                step="0.1" placeholder="0-20" required>
                                         </div>
-                                        
+
                                         <div class="grade-field">
                                             <label for="activity-{{ student.id }}-{{ lesson.id }}">
                                                 <i class="fas fa-chalkboard-teacher"></i>
                                                 فعالیت کلاسی
                                             </label>
-                                            <input id="activity-{{ student.id }}-{{ lesson.id }}" 
-                                                   name="class_activities[]" 
-                                                   type="number" 
-                                                   class="grade-input activity-input" 
-                                                   min="0" 
-                                                   max="20" 
-                                                   step="0.1" 
-                                                   placeholder="0-20" 
-                                                   required>
+                                            <input id="activity-{{ student.id }}-{{ lesson.id }}"
+                                                name="class_activities[]" type="number"
+                                                class="grade-input activity-input" min="0" max="20" step="0.1"
+                                                placeholder="0-20" required>
                                         </div>
-                                        
+
                                         <div class="grade-field">
                                             <label for="month-{{ student.id }}-{{ lesson.id }}">
                                                 <i class="fas fa-calendar-alt"></i>
                                                 ماه
                                             </label>
-                                            <select id="month-{{ student.id }}-{{ lesson.id }}" 
-                                                    name="months[]" 
-                                                    class="form-control month-select" 
-                                                    required>
+                                            <select id="month-{{ student.id }}-{{ lesson.id }}" name="months[]"
+                                                class="form-control month-select" required>
                                                 <option value="" selected disabled>انتخاب ماه</option>
                                                 <option value="فروردین">فروردین</option>
                                                 <option value="اردیبهشت">اردیبهشت</option>
@@ -1930,16 +1946,14 @@
                                                 <option value="اسفند">اسفند</option>
                                             </select>
                                         </div>
-                                        
+
                                         <div class="grade-field">
                                             <label for="status-{{ student.id }}-{{ lesson.id }}">
                                                 <i class="fas fa-chart-bar"></i>
                                                 وضعیت
                                             </label>
-                                            <select id="status-{{ student.id }}-{{ lesson.id }}" 
-                                                    name="statuses[]" 
-                                                    class="form-control status-select" 
-                                                    required>
+                                            <select id="status-{{ student.id }}-{{ lesson.id }}" name="statuses[]"
+                                                class="form-control status-select" required>
                                                 <option value="" selected disabled>انتخاب وضعیت</option>
                                                 <option value="average">متوسط</option>
                                                 <option value="good">خوب</option>
@@ -1950,7 +1964,7 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            
+
                             <div class="form-status">
                                 <i class="fas fa-info-circle"></i>
                                 <span>همه نمرات این درس به صورت دسته‌جمعی ثبت خواهند شد</span>
@@ -1961,186 +1975,270 @@
                 {% endfor %}
             </section>
             <section id="articles" class="page-section">
-            {% else %}
-            <section id="articles" class="page-section active">
-            {% endif %}
+                {% else %}
+                <section id="articles" class="page-section active">
+                    {% endif %}
 
-            <!-- نوشتن مقاله -->
-            
-                <div class="page-header">
-                    <h1 class="page-title">مدیریت مقالات</h1>
-                    <p class="page-description">نوشتن و مدیریت مقالات آموزشی</p>
-                    <a href="{% url 'blog:addarticle' %}" class="btn btn-primary">نوشتن مقاله</a>
-                </div>
+                    <!-- نوشتن مقاله -->
 
-                {% if articles %}
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">مقالات قبلی</h2>
+                    <div class="page-header">
+                        <h1 class="page-title">مدیریت مقالات</h1>
+                        <p class="page-description">نوشتن و مدیریت مقالات آموزشی</p>
+                        <a href="{% url 'blog:addarticle' %}" class="btn btn-primary">نوشتن مقاله</a>
                     </div>
-                    <div class="articles-list">
-                        {% for article in articles %}
-                        <div class="article-item">
-                            <div class="article-header">
-                                <div>
-                                    <h3 class="article-title">{{ article.title }}</h3>
-                                    <div class="article-meta">
-                                        <span><i class="far fa-calendar"></i> {{ article.created_date|date:'Y/m/d' }}</span>
-                                        <span><i class="far fa-folder"></i> {{ article.subject }}</span>
-                                        <span><i class="far fa-eye"></i> {{ article.views }}</span>
-                                        {% if article.status == True %}
-                                        <span class="text-success">تایید شد</span>
-                                        {% else %}
-                                        <span class="text-warning">در انتظار تایید</span>
-                                        {% endif %}
+
+                    {% if articles %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">مقالات قبلی</h2>
+                        </div>
+                        <div class="articles-list">
+                            {% for article in articles %}
+                            <div class="article-item">
+                                <div class="article-header">
+                                    <div>
+                                        <h3 class="article-title">{{ article.title }}</h3>
+                                        <div class="article-meta">
+                                            <span><i class="far fa-calendar"></i> {{ article.created_date|date:'Y/m/d'}}</span>
+                                            <span><i class="far fa-folder"></i> {{ article.subject }}</span>
+                                            <span><i class="far fa-eye"></i> {{ article.views }}</span>
+                                            {% if article.status == True %}
+                                            <span class="text-success">تایید شد</span>
+                                            {% else %}
+                                            <span class="text-warning">در انتظار تایید</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="article-actions">
+                                        <a href="{% url 'blog:detail' article.search %}"
+                                            class="action-btn edit-btn">مشاهده مقاله</a>
+                                        <a href="{% url 'blog:article_update' article.search %}"
+                                            class="action-btn edit-btn">ویرایش</a>
+                                        <form method="get" action="{% url 'blog:article_delete' article.search %}"
+                                            class="delete-form">
+                                            <button type="submit" class="action-btn delete-btn"
+                                                onclick="return confirm('آیا از حذف این مقاله مطمئن هستید؟')">حذف
+                                                مقاله</button>
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="article-actions">
-                                    <a href="{% url 'blog:detail' article.search %}" class="action-btn edit-btn">مشاهده مقاله</a>
-                                    <a href="{% url 'blog:article_update' article.search %}" class="action-btn edit-btn">ویرایش</a>
-                                    <form method="get" action="{% url 'blog:article_delete' article.search %}" class="delete-form">
-                                        <button type="submit" class="action-btn delete-btn" onclick="return confirm('آیا از حذف این مقاله مطمئن هستید؟')">حذف مقاله</button>
-                                    </form>
-                                </div>  
-                            </div>
-                            <p>{{ article.content|truncate_chars:100|safe }}</p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-            </section>
-
-            <!-- پروفایل -->
-            <section id="profile" class="page-section">
-                <div class="page-header">
-                    <h1 class="page-title">پروفایل من</h1>
-                    <p class="page-description">مدیریت اطلاعات شخصی و حساب کاربری</p>
-                </div>
-
-                <div class="card">
-                    <div class="profile-card">
-                        <div class="profile-avatar">
-                            {% if request.user.teachers.image %}
-                            <img src="{{ request.user.teachers.image.url }}" alt="{{ request.user.teachers.full_name }}">
-                            {% else %}
-                            <i class="fas fa-user"></i>
-                            {% endif %}
-                        </div>
-                        <div class="profile-info">
-                            <h2 class="profile-name">{{ request.user.teachers.full_name }}</h2>
-                            <p>عضویت: {{ request.user.created_date|date:'Y/m/d' }}</p>
-                            <div class="profile-stats">
-                                <div class="stat-item">
-                                    <div class="stat-value">{{ request.user.teachers.teaching_experience }}</div>
-                                    <div class="stat-label">سال سابقه</div>
-                                </div>
-                                {% with article_count=request.user.articles.count %}
-                                <div class="stat-item">
-                                    <div class="stat-value">{{ article_count }}</div>
-                                    <div class="stat-label">مقاله</div>
-                                </div>
-                                {% endwith %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header"></div>
-                    <div class="profile-details">
-                        <div style="text-align: center; padding: 2rem;">
-                            <p>برای مشاهده و ویرایش اطلاعات پروفایل خود، روی دکمه زیر کلیک کنید.</p>
-                            <a href="{% url 'account:change_password' %}" class="btn btn-primary" style="margin-top: 1rem;">تغییر رمز عبور</a>
-                            <a href="{% url 'account:edit_teacher' %}" class="btn btn-primary" style="margin-top: 1rem;">ویرایش اطلاعات حساب</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- کلاس‌ها -->
-            <section id="classes" class="page-section">
-                {% if lessons %}
-                <div class="page-header">
-                    <h1 class="page-title">کلاس‌های من</h1>
-                    <p class="page-description">مدیریت کلاس‌های درسی</p>
-                </div>
-                {% else %}
-                <h2 class="page-title">هنوز کلاسی برای شما ثبت نشده.</h2>
-                {% endif %}
-
-                <div class="classes-grid">
-                    {% for lesson in lessons %}
-                    <div class="class-card">
-                        <div class="class-header">
-                            <h3 class="class-title">{{ lesson.name }}</h3>
-                        </div>
-                        <div class="class-body">
-                            <a href="{% url 'account:attendancerecord' lesson.id %}" class="btn btn-h">حضور و غیاب</a>
-                            <a href="{% url 'account:score_list' lesson.id %}" class="btn btn-h">مشاهده نمرات</a>
-                            <a href="{% url 'account:assignment_create' %}" class="btn btn-h">تکالیف</a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </section>
-
-            <!-- پیام‌ها -->
-            <section id="messages" class="page-section">
-                {% if teacher_contact %}
-                <div class="page-header">
-                    <h1 class="page-title">پیام‌ها</h1>
-                    <p class="page-description">مدیریت ارتباط با اولیا و همکاران</p>
-                </div>
-                {% else %}
-                <h1 class="page-title">هیچ پیامی برای شما ارسال نشده.</h1>
-                {% endif %}
-                {% if teacher_contact %}
-                <div class="messages-container">
-                    <div class="messages-sidebar">
-                        <h3 style="margin-bottom: 1rem;">لیست پیام‌ها</h3>
-                        <div class="messages-list">
-                            {% for contact in teacher_contact %}
-                            <div class="message-item" onclick="showMessage('{{ contact.id }}')">
-                                <div class="message-sender">{{ contact.student }}</div>
-                                <div class="message-subject">
-                                    <i class="fas fa-tag"></i>
-                                    {{ contact.subject|default:"بدون موضوع" }}
-                                </div>
-                                <div class="message-preview">{{ contact.message|truncate_chars:25 }}</div>
+                                <p>{{ article.content|truncate_chars:100|safe }}</p>
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="message-content">
-                        {% for contact in teacher_contact %}
-                        <div id="{{ contact.id }}" class="message-display" style="display: none;">
-                            <div class="message-header">
-                                <div class="message-sender-info">
-                                    <div class="message-avatar">{{ contact.student|truncate_chars:1 }}</div>
-                                    <div>
-                                        <div class="message-sender">{{ contact.student }}</div>
-                                        <div style="color: var(--text-color); font-size: 0.9rem;">{{ contact.created_date|date:'Y/m/d' }}</div>
+                    {% endif %}
+                </section>
+
+                <!-- پروفایل -->
+                <section id="profile" class="page-section">
+                    <div class="page-header">
+                        <h1 class="page-title">پروفایل من</h1>
+                        <p class="page-description">مدیریت اطلاعات شخصی و حساب کاربری</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="profile-card">
+                            <div class="profile-avatar">
+                                {% if request.user.teachers.image %}
+                                <img src="{{ request.user.teachers.image.url }}"
+                                    alt="{{ request.user.teachers.full_name }}">
+                                {% else %}
+                                <i class="fas fa-user"></i>
+                                {% endif %}
+                            </div>
+                            <div class="profile-info">
+                                <h2 class="profile-name">{{ request.user.teachers.full_name }}</h2>
+                                <p>عضویت: {{ request.user.created_date|date:'Y/m/d' }}</p>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value">{{ request.user.teachers.teaching_experience }}</div>
+                                        <div class="stat-label">سال سابقه</div>
                                     </div>
+                                    {% with article_count=request.user.articles.count %}
+                                    <div class="stat-item">
+                                        <div class="stat-value">{{ article_count }}</div>
+                                        <div class="stat-label">مقاله</div>
+                                    </div>
+                                    {% endwith %}
                                 </div>
                             </div>
-                            
-                            <div class="message-subject-display">
-                                <div class="message-subject-title">
-                                    <i class="fas fa-tag"></i>
-                                    موضوع: {{ contact.subject|default:"بدون موضوع" }}
-                                </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"></div>
+                        <div class="profile-details">
+                            <div style="text-align: center; padding: 2rem;">
+                                <p>برای مشاهده و ویرایش اطلاعات پروفایل خود، روی دکمه زیر کلیک کنید.</p>
+                                <a href="{% url 'account:change_password' %}" class="btn btn-primary"
+                                    style="margin-top: 1rem;">تغییر رمز عبور</a>
+                                <a href="{% url 'account:edit_teacher' %}" class="btn btn-primary"
+                                    style="margin-top: 1rem;">ویرایش اطلاعات حساب</a>
                             </div>
-                            
-                            <div class="message-body">
-                                <p>{{ contact.message }}</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- کلاس‌ها -->
+                <section id="classes" class="page-section">
+                    {% if lessons %}
+                    <div class="page-header">
+                        <h1 class="page-title">کلاس‌های من</h1>
+                        <p class="page-description">مدیریت کلاس‌های درسی</p>
+                    </div>
+                    {% else %}
+                    <h2 class="page-title">هنوز کلاسی برای شما ثبت نشده.</h2>
+                    {% endif %}
+
+                    <div class="classes-grid">
+                        {% for lesson in lessons %}
+                        <div class="class-card">
+                            <div class="class-header">
+                                <h3 class="class-title">{{ lesson.name }}</h3>
+                            </div>
+                            <div class="class-body">
+                                <a href="{% url 'account:attendancerecord' lesson.id %}" class="btn btn-h">حضور و
+                                    غیاب</a>
+                                <a href="{% url 'account:score_list' lesson.id %}" class="btn btn-h">مشاهده نمرات</a>
+                                <a href="{% url 'account:assignment_create' %}" class="btn btn-h">تکالیف</a>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
+                </section>
+
+                <!-- پیام‌ها -->
+                <section id="messages" class="page-section">
+                    {% if teacher_contact %}
+                    <div class="page-header">
+                        <h1 class="page-title">پیام‌ها</h1>
+                        <p class="page-description">مدیریت ارتباط با اولیا و همکاران</p>
+                    </div>
+                    {% else %}
+                    <h1 class="page-title">هیچ پیامی برای شما ارسال نشده.</h1>
+                    {% endif %}
+                    {% if teacher_contact %}
+                    <div class="messages-container">
+                        <div class="messages-sidebar">
+                            <h3 style="margin-bottom: 1rem;">لیست پیام‌ها</h3>
+                            <div class="messages-list">
+                                {% for contact in teacher_contact %}
+                                <div class="message-item" onclick="showMessage('{{ contact.id }}')">
+                                    <div class="message-sender">{{ contact.student }}</div>
+                                    <div class="message-subject">
+                                        <i class="fas fa-tag"></i>
+                                        {{ contact.subject|default:"بدون موضوع" }}
+                                    </div>
+                                    <div class="message-preview">{{ contact.message|truncate_chars:25 }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            {% for contact in teacher_contact %}
+                            <div id="{{ contact.id }}" class="message-display" style="display: none;">
+                                <div class="message-header">
+                                    <div class="message-sender-info">
+                                        <div class="message-avatar">{{ contact.student|truncate_chars:1 }}</div>
+                                        <div>
+                                            <div class="message-sender">{{ contact.student }}</div>
+                                            <div style="color: var(--text-color); font-size: 0.9rem;">{{contact.created_date|date:'Y/m/d' }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="message-subject-display">
+                                    <div class="message-subject-title">
+                                        <i class="fas fa-tag"></i>
+                                        موضوع: {{ contact.subject|default:"بدون موضوع" }}
+                                    </div>
+                                </div>
+
+                                <div class="message-body">
+                                    <p>{{ contact.message }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </section>
+
+
+
+                <!-- تکالیف من -->
+<section id="my-assignments" class="page-section">
+    <div class="page-header">
+        <h1 class="page-title">تکالیف من</h1>
+        <p class="page-description">لیست تکالیفی که ایجاد کرده‌اید</p>
+        <a href="{% url 'account:assignment_create' %}" class="btn btn-primary">ایجاد تکلیف جدید</a>
+    </div>
+
+    {% if teacher_assignments %}
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">تکالیف ثبت شده</h2>
+        </div>
+        <div class="articles-list">
+            {% for assignment in teacher_assignments %}
+            <div class="article-item">
+                <div class="article-header">
+                    <div>
+                        <h3 class="article-title">{{ assignment.title }}</h3>
+                        <div class="article-meta">
+                            <span><i class="far fa-calendar"></i> تاریخ ایجاد: {{ assignment.created_date|date:'Y/m/d' }}</span>
+                            <span><i class="fas fa-book-open"></i> {{ assignment.lesson.name }}</span>
+                            <span><i class="fas fa-users"></i> {{ assignment.lesson.student.all|length }} دانش‌آموز</span>
+                            {% if assignment.status == True %}
+                            <span class="text-success">فعال</span>
+                            {% else %}
+                            <span class="text-warning">غیرفعال</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="article-actions">
+
+                        
+                        <a href="{% url 'account:assignment_update' assignment.id %}" class="action-btn edit-btn">ویرایش</a>
+                        <a href="{% url 'account:assignment_delete' assignment.id %}" class="action-btn delete-btn" onclick="return confirm('آیا از حذف این تکلیف مطمئن هستید؟')">حذف</a>
+                    </div>
+                </div>
+                <p>{{ assignment.description|truncate_chars:100|safe }}</p>
+                
+                <!-- آمار تحویل تکالیف -->
+                {% if assignment.submissions.count > 0 %}
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(0,0,0,0.1);">
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                            <span>تحویل شده: {{ assignment.submissions.count }} نفر</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-clock" style="color: #f59e0b;"></i>
+                            <span>در انتظار: {{ assignment.submissions.pending.count }} نفر</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-star" style="color: #3b82f6;"></i>
+                            <span>میانگین نمره: {{ assignment.submissions.average_score|default:"-" }}</span>
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
-            </section>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <i class="fas fa-pencil-alt" style="font-size: 4rem; color: var(--primary-light); margin-bottom: 1rem;"></i>
+        <h3 style="margin-bottom: 1rem;">هنوز تکلیفی ایجاد نکرده‌اید</h3>
+        <p style="margin-bottom: 2rem; color: var(--text-color);">اولین تکلیف خود را برای دانش‌آموزان ایجاد کنید</p>
+        <a href="{% url 'account:assignment_create' %}" class="btn btn-primary">ایجاد تکلیف جدید</a>
+    </div>
+    {% endif %}
+</section>
+
         </main>
     </div>
 
@@ -2156,7 +2254,7 @@
                 setTimeout(() => {
                     messageContainer.style.opacity = '0';
                     messageContainer.style.transition = 'all 0.5s ease';
-                    
+
                     setTimeout(() => {
                         messageContainer.style.display = 'none';
                     }, 500);
@@ -2183,7 +2281,7 @@
 
                     // مخفی کردن همه بخش‌ها
                     lessonSections.forEach(section => section.classList.remove('active'));
-                    
+
                     // نمایش بخش مربوطه
                     const targetSection = document.getElementById(lessonId);
                     if (targetSection) {
@@ -2253,7 +2351,7 @@
 
                     // مخفی کردن همه بخش‌ها
                     pageSections.forEach(section => section.classList.remove('active'));
-                    
+
                     // نمایش بخش مربوطه
                     const targetId = this.getAttribute('data-target');
                     const targetSection = document.getElementById(targetId);
@@ -2270,7 +2368,7 @@
             });
 
             // تغییر ظاهر هدر هنگام اسکرول
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 const header = document.querySelector('header');
                 if (window.scrollY > 50) {
                     header.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
@@ -2302,27 +2400,27 @@
             // بهبود تایپ در موبایل
             const gradeInputs = document.querySelectorAll('.grade-input');
             gradeInputs.forEach(input => {
-                input.addEventListener('focus', function() {
+                input.addEventListener('focus', function () {
                     this.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 });
             });
 
             // مدیریت دکمه "پر کردن همه نمرات"
             const fillAllButtons = document.querySelectorAll('.fill-all-btn');
-            
+
             fillAllButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const lessonId = this.getAttribute('data-lesson');
                     const lessonSection = document.getElementById('grade-form-' + lessonId);
-                    
+
                     if (!lessonSection) return;
-                    
+
                     // درخواست نمره از کاربر
                     const score = prompt('لطفا نمره درس را وارد کنید (0-20):', '15');
                     const activity = prompt('لطفا نمره فعالیت کلاسی را وارد کنید (0-20):', '15');
                     const month = prompt('لطفا ماه را انتخاب کنید (فروردین، اردیبهشت، خرداد، مهر، آبان، آذر، دی، بهمن، اسفند):', 'مهر');
                     const status = prompt('لطفا وضعیت را انتخاب کنید (average=متوسط، good=خوب، great=عالی):', 'good');
-                    
+
                     // اعتبارسنجی مقادیر
                     if (score && activity && month && status) {
                         // پر کردن همه فیلدهای درس جاری
@@ -2330,12 +2428,12 @@
                         const activityInputs = lessonSection.querySelectorAll('.activity-input');
                         const monthSelects = lessonSection.querySelectorAll('.month-select');
                         const statusSelects = lessonSection.querySelectorAll('.status-select');
-                        
+
                         scoreInputs.forEach(input => input.value = score);
                         activityInputs.forEach(input => input.value = activity);
                         monthSelects.forEach(select => select.value = month);
                         statusSelects.forEach(select => select.value = status);
-                        
+
                         alert('همه فیلدها با موفقیت پر شدند!');
                     }
                 });
@@ -2343,18 +2441,18 @@
 
             // مدیریت ثبت دسته‌جمعی فرم‌ها
             const gradeForms = document.querySelectorAll('.grade-form');
-            
+
             gradeForms.forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     e.preventDefault();
-                    
+
                     // نمایش پیام در حال بارگذاری
                     const submitBtn = this.querySelector('.bulk-submit-btn');
                     if (submitBtn) {
                         const originalText = submitBtn.innerHTML;
                         submitBtn.disabled = true;
                         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ثبت...';
-                        
+
                         // تاخیر برای نمایش انیمیشن
                         setTimeout(() => {
                             this.submit();
@@ -2371,7 +2469,7 @@
 
             // اعتبارسنجی فرم قبل از ارسال
             gradeForms.forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     // بررسی اینکه آیا حداقل یک دانش‌آموز وجود دارد
                     const studentInputs = this.querySelectorAll('input[name="students[]"]');
                     if (studentInputs.length === 0) {
@@ -2379,11 +2477,11 @@
                         e.preventDefault();
                         return false;
                     }
-                    
+
                     // بررسی پر شدن تمام فیلدها
                     let allFieldsFilled = true;
                     const requiredInputs = this.querySelectorAll('input[required], select[required]');
-                    
+
                     requiredInputs.forEach(input => {
                         if (!input.value.trim()) {
                             input.style.borderColor = '#dc2626';
@@ -2392,13 +2490,13 @@
                             input.style.borderColor = '#e2e8f0';
                         }
                     });
-                    
+
                     if (!allFieldsFilled) {
                         alert('لطفا تمام فیلدهای ضروری را پر کنید!');
                         e.preventDefault();
                         return false;
                     }
-                    
+
                     return true;
                 });
             });
@@ -2406,11 +2504,11 @@
             // افزودن کلاس hover به فیلدها
             const formInputs = document.querySelectorAll('.grade-input, .form-control');
             formInputs.forEach(input => {
-                input.addEventListener('focus', function() {
+                input.addEventListener('focus', function () {
                     this.parentElement.style.transform = 'scale(1.02)';
                 });
-                
-                input.addEventListener('blur', function() {
+
+                input.addEventListener('blur', function () {
                     this.parentElement.style.transform = 'scale(1)';
                 });
             });
@@ -2423,28 +2521,28 @@
             allMessages.forEach(msg => {
                 msg.style.display = 'none';
             });
-            
+
             // نمایش پیام انتخاب شده
             const selectedMessage = document.getElementById(messageId);
             if (selectedMessage) {
                 selectedMessage.style.display = 'block';
             }
-            
+
             // حذف کلاس active از همه آیتم‌های پیام
             const allMessageItems = document.querySelectorAll('.message-item');
             allMessageItems.forEach(item => {
                 item.classList.remove('active');
             });
-            
+
             // اضافه کردن کلاس active به آیتم انتخاب شده
             event.currentTarget.classList.add('active');
         }
 
         // مدیریت کلیک بیرون از سایدبار در دسکتاپ
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
-            
+
             if (window.innerWidth > 992 && sidebar && mainContent) {
                 // در دسکتاپ کاری انجام نمی‌دهیم
                 return;
@@ -2455,16 +2553,16 @@
         function setDefaultValues(lessonId) {
             const lessonSection = document.getElementById('grade-form-' + lessonId);
             if (!lessonSection) return;
-            
+
             const today = new Date();
             const persianMonths = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
             const currentMonth = persianMonths[today.getMonth()];
-            
+
             const scoreInputs = lessonSection.querySelectorAll('.score-input');
             const activityInputs = lessonSection.querySelectorAll('.activity-input');
             const monthSelects = lessonSection.querySelectorAll('.month-select');
             const statusSelects = lessonSection.querySelectorAll('.status-select');
-            
+
             scoreInputs.forEach(input => input.value = '15');
             activityInputs.forEach(input => input.value = '15');
             monthSelects.forEach(select => {
@@ -2473,9 +2571,10 @@
             statusSelects.forEach(select => {
                 select.value = 'good';
             });
-            
+
             return true;
         }
     </script>
 </body>
+
 </html>

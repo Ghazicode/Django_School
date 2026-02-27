@@ -355,3 +355,25 @@ class ParentCommentForm(forms.ModelForm):
                 }
             ),
         }
+
+
+
+class AssignmentUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        fields = ('lesson', 'content', 'status')
+        widgets = {
+            "content": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "id": "parentName",
+                }
+            ),
+        'status': forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+                'id':'status'
+            }  
+    )
+            
+    }
