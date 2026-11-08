@@ -961,6 +961,10 @@ class AssignmentUpdateView(View):
                     form = AssignmentUpdateForm(instance=assignment)
                 except Assignment.DoesNotExist:
                     raise Http404()
+            else:
+                raise Http404()
+        else:
+            raise Http404()
         return render(request, 'accounts/assignment_update.html', {'form':form, 'lessons':lessons})
     
 
@@ -972,7 +976,7 @@ class AssignmentUpdateView(View):
                     lessons = Lesson.objects.filter(teacher = user.teachers)
                     assignment = Assignment.objects.get(id = pk, teacher = user.teachers)
                     form = AssignmentUpdateForm(request.POST, instance=assignment)
-                    if form.is_valid:
+                    if form.is_valid():
                         form.save()
                         messages.add_message(request, messages.SUCCESS, 'تکلیف با موفقیت بروزرسانی شد')
                         return redirect('account:teacher_profile') 
